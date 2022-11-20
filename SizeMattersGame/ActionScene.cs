@@ -16,7 +16,7 @@ namespace GameTemplate
 	public class ActionScene : GameScene //test
 	{
 		private Game1 g;
-		private SpriteBatch spriteBatch; //test
+		private SpriteBatch spriteBatch;
 
 
 
