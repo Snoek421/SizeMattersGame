@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GameTemplate
 {
-	public class ActionScene : GameScene //test
+	public class ActionScene : GameScene
 	{
 		private Game1 g;
 		private SpriteBatch spriteBatch;
