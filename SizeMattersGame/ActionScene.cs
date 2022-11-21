@@ -18,7 +18,7 @@ namespace GameTemplate
 		private Game1 g;
 		private SpriteBatch spriteBatch;
 
-
+		private string testing;
 
 
 
