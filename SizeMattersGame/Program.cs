@@ -1,3 +1,3 @@
 ﻿
-using var game = new GameTemplate.Game1();
+using var game = new SizeMattersGame.Game1();
 game.Run();

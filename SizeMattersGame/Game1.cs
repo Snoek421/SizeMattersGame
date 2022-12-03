@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.ComponentModel.Design;
 
-namespace GameTemplate
+namespace SizeMattersGame
 {
 	public class Game1 : Game
 	{
