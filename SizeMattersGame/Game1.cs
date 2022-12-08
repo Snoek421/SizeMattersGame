@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SizeMattersGame.GameScenes;
 using System.ComponentModel.Design;
 
 namespace SizeMattersGame
 {
-	public class Game1 : Game
+    public class Game1 : Game
 	{
 		private GraphicsDeviceManager _graphics;
 		public SpriteBatch _spriteBatch;

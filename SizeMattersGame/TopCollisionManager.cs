@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SizeMattersGame.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 namespace SizeMattersGame
 {
 
-	public class CollisionManager : GameComponent
+    public class TopCollisionManager : GameComponent
 	{
 		public Player player;
 		public List<ICollideableObject> level;
 		private Rectangle levelRect;
 
-		public CollisionManager(Game game, Player player, List<ICollideableObject> level) : base(game)
+		public TopCollisionManager(Game game, Player player, List<ICollideableObject> level) : base(game)
 		{
 			this.player = player;
 			this.level = level;
@@ -31,24 +32,13 @@ namespace SizeMattersGame
 			foreach (var item in level)
 			{
 				levelRect = item.GetBounds();
-				if (playerRect.Intersects(levelRect))
+				if (playerRect.Intersects(levelRect) && playerRect.Bottom >= levelRect.Top && playerRect.Top < levelRect.Bottom)
 				{
-					if (playerRect.Bottom >= levelRect.Top)
-					{
-						player.position.Y = levelRect.Top - playerRect.Height;
-						player.downCollision = true;
-					}
-					else if (playerRect.Right >= levelRect.Left)
-					{
-						player.rightCollision = true;
-						player.position.X = levelRect.Left + playerRect.Width;
-					}
-					else if (playerRect.Left <= levelRect.Right)
-					{
-						player.leftCollision = true;
-						player.position.X = levelRect.Right;
-					}
+					player.position.Y = levelRect.Top - playerRect.Height;
+					player.downCollision = true;
 				}
+
+
 				if (!playerRect.Intersects(levelRect))
 				{
 					player.ResetCollision();
