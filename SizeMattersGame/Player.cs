@@ -29,7 +29,7 @@ namespace SizeMattersGame
 		private const int SPEED = 5; //speed const for movement logic
 
 		private float rotation;
-		private float scale = 4f;
+		private float scale = 3f;
 
 		private Vector2 origin;
 		public Rectangle playerBox;
@@ -227,7 +227,7 @@ namespace SizeMattersGame
 			{
 				restart();
 				pressed = false;
-				scale = 4f;
+				scale = 3f;
 				//tex = game.Content.Load<Texture2D>("images/SizeLargeText");
 				//playerBox = new Rectangle(x, y, tex.Width, tex.Height);               
 				//rotation = (float)Math.PI;
