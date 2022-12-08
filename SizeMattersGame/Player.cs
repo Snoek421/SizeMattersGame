@@ -27,7 +27,7 @@ namespace SizeMattersGame
 		private const int JUMP_STRENGTH = 7; //initial position change on jump to make it feel better
 		private const float GRAVITY = 0.4f;
 		private const int SPEED = 5; //speed const for movement logic
-		private const float SCALE = 2f;
+		private const float SCALE = 3f;
 
 		private float rotation;
 
