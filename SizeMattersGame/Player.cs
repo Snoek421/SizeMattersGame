@@ -9,27 +9,32 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SizeMattersGame
 {
-	public class Player : DrawableGameComponent
+	public class Player : DrawableGameComponent, ICollideableObject
 	{
 		private SpriteBatch playerBatch;
 		public Texture2D tex;
 
-		private Vector2 position;
+		public Vector2 position;
 		private int x;
 		private int y;
 
 
 		private const int JUMP_VELOCITY = 4; //allows for a bit more of a floaty jump
 		private bool hasJumped = false; //controls the flow of jump logic
-		private Vector2 velocity = new Vector2(0, 0); //for controlling movement in general
+		public Vector2 velocity = new Vector2(0, 0); //for controlling movement in general
 		private int jumpTimer = 0;
 		private const int MAX_JUMP_TIME = 15; //variables to control jump height
 		private const int JUMP_STRENGTH = 7; //initial position change on jump to make it feel better
 		private const float GRAVITY = 0.4f;
 		private const int SPEED = 5; //speed const for movement logic
+		private const float SCALE = 2f;
 
 		private float rotation;
-		private float scale = 4f;
+
+		public bool leftCollision = false;
+		public bool rightCollision = false;
+		public bool upCollision = false;
+		public bool downCollision = false;
 
 		private Vector2 origin;
 		public Rectangle playerBox;
@@ -63,12 +68,20 @@ namespace SizeMattersGame
 			x = (int)position.X;
 			y = (int)position.Y;
 
-			this.origin = new Vector2(tex.Width / 2, tex.Height / 2);
-			this.playerBox = new Rectangle(x, y, tex.Width, tex.Height);
+			this.origin = new Vector2((tex.Width/ROWS) /2, (tex.Height/COLS)/2 );   //(tex.Width / 2, tex.Height / 2);
+			this.playerBox = new Rectangle(x, y, tex.Width/ROWS, tex.Height/COLS);
 			this.rotation = 0;
 			CreateFrames();
 
 			this.game = game;
+		}
+
+		public void ResetCollision()
+		{
+			this.leftCollision = false;
+			this.rightCollision = false;
+			this.upCollision= false;
+			this.downCollision= false;
 		}
 
 		private void CreateFrames()
@@ -117,7 +130,7 @@ namespace SizeMattersGame
 			if (ks.IsKeyDown(Keys.Space))
 			{
 				jumpTimer++;
-				if (jumpTimer >= MAX_JUMP_TIME)
+				if (jumpTimer >= MAX_JUMP_TIME && downCollision != true)
 				{
 					velocity.Y += GRAVITY * 1;
 				}
@@ -126,37 +139,43 @@ namespace SizeMattersGame
 					position.Y -= JUMP_STRENGTH;
 					velocity.Y = -JUMP_VELOCITY;
 					hasJumped = true;
+					downCollision = false;
 				}
 			}
 
-			if (hasJumped == true)
-			{
-				velocity.Y += GRAVITY * 1;
-			}
-			if (position.Y >= 460)
-			{
-				hasJumped = false;
-			}
-			if (hasJumped == false)
+
+			//if (hasJumped == true)
+			//{
+			//	velocity.Y += GRAVITY * 1;
+			//}
+			//if (position.Y >= 0 + playerBox.Height || downCollision == true)
+			//{
+			//	hasJumped = false;
+			//}
+			//if (hasJumped == false || downCollision == true)
+			//{
+			//	velocity.Y = 0;
+			//	jumpTimer = 0;
+			//}
+			//if (downCollision == false)
+			//{
+			//	velocity.Y += GRAVITY * 1;
+			//}
+			if (position.Y >= Shared.stage.Y - playerBox.Height || downCollision == true)
 			{
 				velocity.Y = 0;
 				jumpTimer = 0;
+				downCollision = true;
 			}
-			//commented out to test jumping
-			//if (ks.IsKeyDown(Keys.Up)) 
-			//{
-			//	position = new Vector2(x, y);
-			//	y -= 10;
-			//}
-			//if (ks.IsKeyDown(Keys.Down))
-			//{
-			//	position = new Vector2(x, y);
-			//	y += 10;
-			//}
-
-
-			if (ks.IsKeyDown(Keys.Left))
+			if (position.Y <= Shared.stage.Y - playerBox.Height && hasJumped == true || downCollision == false)
 			{
+				velocity.Y += GRAVITY * 1;
+			}
+
+
+			if (ks.IsKeyDown(Keys.Left) && leftCollision != true)
+			{
+				rightCollision = false;
 				if (true)
 				{
 
@@ -192,8 +211,9 @@ namespace SizeMattersGame
 
 			}
 
-			if (ks.IsKeyDown(Keys.Right))
+			if (ks.IsKeyDown(Keys.Right) && rightCollision != true)
 			{
+				leftCollision= false;
 				if (pressed == false)
 				{
 					frameIndex = 5;
@@ -227,7 +247,6 @@ namespace SizeMattersGame
 			{
 				restart();
 				pressed = false;
-				scale = 4f;
 				//tex = game.Content.Load<Texture2D>("images/SizeLargeText");
 				//playerBox = new Rectangle(x, y, tex.Width, tex.Height);               
 				//rotation = (float)Math.PI;
@@ -345,11 +364,16 @@ namespace SizeMattersGame
 			if (frameIndex >= 0)
 			{
 				playerBatch.Begin();
-				playerBatch.Draw(tex, position, frames[frameIndex], Color.White, rotation, origin, scale, SpriteEffects.None, 1);
+				playerBatch.Draw(tex, position, frames[frameIndex], Color.White, rotation, origin, SCALE, SpriteEffects.None, 1);
 				playerBatch.End();
 			}
 
 			base.Draw(gameTime);
+		}
+
+		public Rectangle GetBounds()
+		{
+			return new Rectangle((int)position.X, (int)position.Y, frames[1].Width, frames[1].Height);
 		}
 	}
 }

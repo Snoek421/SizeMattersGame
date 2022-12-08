@@ -21,6 +21,7 @@ namespace SizeMattersGame
 
 		private Player player;
 		private CollisionManager collisionManager;
+		private List<ICollideableObject> levelBlocks = new List<ICollideableObject>();
 
 
 
@@ -28,10 +29,23 @@ namespace SizeMattersGame
 		{
 			g = (Game1)game;
 			spriteBatch = g._spriteBatch;
+
+			//player character
 			Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
 			Vector2 playerPosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
 			player = new Player(game, spriteBatch, playerTex, playerPosition);
 			this.components.Add(player);
+
+			//block
+			Texture2D blockTex = game.Content.Load<Texture2D>("images/testblock");
+			Vector2 block1Pos = new Vector2(Shared.stage.X /2 - blockTex.Width, Shared.stage.Y - blockTex.Height - 30);
+			Block block = new Block(game, spriteBatch, blockTex, block1Pos);
+			this.components.Add(block);
+			levelBlocks.Add(block);
+
+
+			collisionManager = new CollisionManager(game, player, levelBlocks);
+			this.components.Add(collisionManager);
 		}
 
 		protected override void LoadContent()
