@@ -17,7 +17,7 @@ namespace SizeMattersGame.Sprites
 
         //sound
         private SoundEffect jumpSound; //downloaded from freesound.org https://freesound.org/s/369515/
-        private const float VOLUME = 0.2f;
+        private const float VOLUME = 0.15f;
         private const float PITCH = 0.05f;
         private const float PAN = 0.5f;
 

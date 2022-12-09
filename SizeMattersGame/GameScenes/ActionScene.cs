@@ -32,8 +32,7 @@ namespace SizeMattersGame.GameScenes
             g = (Game1)game;
             spriteBatch = g._spriteBatch;
 
-            //music 
-            Song bgmSong = g.Content.Load<Song>("sound/bgmSong"); //downloaded from https://freemusicarchive.org/music/eggy-toast/game-music/7mp3/
+            
 
             //player character
             Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
@@ -54,12 +53,7 @@ namespace SizeMattersGame.GameScenes
             components.Add(sideCollisionManager);
             components.Add(topCollisionManager);
 
-            if (Enabled)
-            {
-                //play bgm
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(bgmSong);
-            }
+
         }
 
         protected override void LoadContent()

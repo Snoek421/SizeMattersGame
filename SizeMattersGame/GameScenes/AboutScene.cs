@@ -9,13 +9,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SizeMattersGame.GameScenes
 {
-    public class CreditScene : GameScene
+    public class AboutScene : GameScene
     {
         private SpriteBatch spritebatch;
         private Texture2D tex;
         private Game1 g;
 
-        public CreditScene(Game game) : base(game)
+        public AboutScene(Game game) : base(game)
         {
             g = (Game1)game;
             spritebatch = g._spriteBatch;

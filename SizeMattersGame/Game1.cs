@@ -1,21 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using SizeMattersGame.GameScenes;
 using System.ComponentModel.Design;
 
 namespace SizeMattersGame
 {
-    public class Game1 : Game
+	public class Game1 : Game
 	{
 		private GraphicsDeviceManager _graphics;
 		public SpriteBatch _spriteBatch;
-		
+
 		//declare all scenes here
 		private StartScene startScene;
 		private HelpScene helpScene;
 		private ActionScene actionScene;
-		private CreditScene creditScene;
+		private AboutScene creditScene;
+
+		//background music
+		Song bgmSong;
 
 
 		public Game1()
@@ -48,11 +52,14 @@ namespace SizeMattersGame
 			actionScene = new ActionScene(this);
 			this.Components.Add(actionScene);
 			//actionScene.show();
-			creditScene = new CreditScene(this);
+			creditScene = new AboutScene(this);
 			this.Components.Add(creditScene);
+
+			//music 
+			bgmSong = this.Content.Load<Song>("sound/bgmSong"); //downloaded from https://freemusicarchive.org/music/eggy-toast/game-music/7mp3/
 		}
 
-		
+
 		/// <summary>
 		/// Goes through the components list and hides each gamescene component
 		/// </summary>
@@ -79,6 +86,11 @@ namespace SizeMattersGame
 				{
 					hideAllScenes();
 					actionScene.show();
+					//play bgm
+					MediaPlayer.IsRepeating = true;
+					MediaPlayer.Volume = 0.2f;
+					MediaPlayer.Play(bgmSong);
+
 				}
 				if (selectedIndex == 1 && ks.IsKeyDown(Keys.Enter))
 				{
@@ -101,6 +113,14 @@ namespace SizeMattersGame
 				{
 					hideAllScenes();
 					startScene.show();
+					try
+					{
+						MediaPlayer.Stop();
+					}
+					catch (System.Exception)
+					{
+
+					}
 				}
 			}
 
