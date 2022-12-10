@@ -12,8 +12,6 @@ namespace SizeMattersGame.GameScenes
 {
     public abstract class GameScene : DrawableGameComponent
     {
-        //private Game1 g;
-        //private SpriteBatch spriteBatch;
 
         public List<GameComponent> components { get; set; }
         public virtual void show()
