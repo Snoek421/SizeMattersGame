@@ -77,6 +77,11 @@ namespace SizeMattersGame.GameScenes
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            foreach (var collideable in _collideables)
+            {
+                collideable.Draw(gameTime);
+            }
             base.Draw(gameTime);
         }
     }

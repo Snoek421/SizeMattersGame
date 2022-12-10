@@ -12,9 +12,15 @@ namespace SizeMattersGame.Sprites
 {
 	public class CollideableObject : DrawableGameComponent, ICollideableObject
 	{
+
+        public Game1 _game;
         public Texture2D tex;
 		public Vector2 Position;
 		public Vector2 Velocity;
+
+        public bool ShowRectangle { get; set; } = true;
+
+        protected Texture2D _rectangleTexture;
 
         public CollideableObject(Game game) : base(game)
         {
@@ -27,7 +33,7 @@ namespace SizeMattersGame.Sprites
 
 
 
-        public Rectangle GetBounds()
+        public virtual Rectangle GetBounds()
         {
             return new Rectangle((int)Position.X, (int)Position.Y, tex.Width, tex.Height);
         }
@@ -103,5 +109,41 @@ namespace SizeMattersGame.Sprites
         public virtual void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
         }
+
+        /// <summary>
+        /// stuff for debugging
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="graphicsDevice"></param>
+        /// <param name="texture"></param>
+
+
+        public void SetRectangleTexture(GraphicsDevice graphicsDevice, Rectangle texture)
+        {
+            var colours = new List<Color>();
+
+            for (int y = 0; y < texture.Height; y++)
+            {
+                for (int x = 0; x < texture.Width; x++)
+                {
+                    if (y == 0 || // On the top
+                        x == 0 || // On the left
+                        y == texture.Height - 1 || // on the bottom
+                        x == texture.Width - 1) // on the right
+                    {
+                        colours.Add(new Color(255, 255, 255, 255)); // white
+                    }
+                    else
+                    {
+                        colours.Add(new Color(0, 0, 0, 0)); // transparent 
+                    }
+                }
+            }
+
+            _rectangleTexture = new Texture2D(graphicsDevice, texture.Width, texture.Height);
+            _rectangleTexture.SetData<Color>(colours.ToArray());
+        }
+
+
     }
 }

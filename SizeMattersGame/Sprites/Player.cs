@@ -43,7 +43,7 @@ namespace SizeMattersGame.Sprites
         private Vector2 origin;
         public Rectangle playerBox;
 
-        private Game game;
+        private Game1 g1;
 
         private Vector2 dimension = new Vector2(18, 18);
         private List<Rectangle> frames;
@@ -72,12 +72,12 @@ namespace SizeMattersGame.Sprites
             x = (int)position.X;
             y = (int)position.Y;
 
-            origin = new Vector2(tex.Width / ROWS, tex.Height / COLS);   //(tex.Width / 2, tex.Height / 2);
+            origin = new Vector2(0, 0);
             //playerBox = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
             //rotation = 0;
             CreateFrames();
 
-            this.game = game;
+            this.g1 = (Game1)game;
             jumpSound = jump;
         }
 
@@ -122,19 +122,13 @@ namespace SizeMattersGame.Sprites
             show();
         }
 
-        private void move()
+        private int getSpriteSize()
         {
-            KeyboardState ks = Keyboard.GetState();
-            if(ks.IsKeyDown(Keys.Left))
-            {
-                base.Velocity.X = -SPEED;
-            }
-            else if (ks.IsKeyDown(Keys.Right))
-            {
-                Velocity.X = SPEED;
-            }
-
+            float size = tex.Width / COLS * SCALE;
+            int simpleSize = (int)Math.Round(size);
+            return simpleSize;
         }
+
 
         bool pressed = false;
         buttonState oldState;
@@ -380,11 +374,11 @@ namespace SizeMattersGame.Sprites
                     continue;
                 }
 
-                if (this.Velocity.Y > 0 && this.CollidingBottom(collideable))
+                if (this.Velocity.Y < 0 && this.CollidingBottom(collideable))
                 {
                     this.Velocity.Y = 0;
                 }
-                if (this.Velocity.Y < 0 && this.CollidingTop(collideable))
+                if (this.Velocity.Y > 0 && this.CollidingTop(collideable))
                 {
                     this.Velocity.Y = 0;
                 }
@@ -404,12 +398,25 @@ namespace SizeMattersGame.Sprites
             base.Update(gameTime);
         }
 
+        public override Rectangle GetBounds()
+        {
+            return new Rectangle((int)Position.X, (int)Position.Y, getSpriteSize(), getSpriteSize());
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if (frameIndex >= 0)
             {
                 playerBatch.Begin();
                 playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, rotation, origin, SCALE, SpriteEffects.None, 1);
+                if (ShowRectangle)
+                {
+                    this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
+                    if (_rectangleTexture != null)
+                    {
+                        playerBatch.Draw(_rectangleTexture, Position, Color.Red);
+                    }
+                }
                 playerBatch.End();
             }
 
