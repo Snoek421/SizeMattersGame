@@ -140,9 +140,10 @@ namespace SizeMattersGame.Sprites
             KeyboardState ks = Keyboard.GetState();
 
 
+            //jump logic
             if (ks.IsKeyDown(Keys.Space))
             {
-                if (oldKsState.IsKeyUp(Keys.Space) && hasJumped == false)
+                if (hasJumped == false)
                 {
                     jumpSound.Play(VOLUME, PITCH, PAN);
                 }
@@ -158,25 +159,6 @@ namespace SizeMattersGame.Sprites
                     hasJumped = true;
                 }
             }
-
-
-            //if (hasJumped == true)
-            //{
-            //	velocity.Y += GRAVITY * 1;
-            //}
-            //if (position.Y >= 0 + playerBox.Height || downCollision == true)
-            //{
-            //	hasJumped = false;
-            //}
-            //if (hasJumped == false || downCollision == true)
-            //{
-            //	velocity.Y = 0;
-            //	jumpTimer = 0;
-            //}
-            //if (downCollision == false)
-            //{
-            //	velocity.Y += GRAVITY * 1;
-            //}
             if (Position.Y >= Shared.stage.Y - playerBox.Height)
             {
                 Velocity.Y = 0;
@@ -378,9 +360,18 @@ namespace SizeMattersGame.Sprites
                 {
                     this.Velocity.Y = 0;
                 }
-                if (this.Velocity.Y > 0 && this.CollidingBottom(collideable))
+                if (this.Velocity.Y >= 0 && this.CollidingBottom(collideable))
                 {
-                    this.Velocity.Y = 0;
+                    int distance = collideable.GetBounds().Top - this.GetBounds().Bottom;
+
+                    Velocity.Y = 0;
+
+                    jumpTimer = 0;
+                    hasJumped = false;
+                }
+                else
+                {
+                    Velocity.Y += GRAVITY * 1;
                 }
                 if (this.Velocity.X > 0 && this.CollidingLeft(collideable))
                 {
