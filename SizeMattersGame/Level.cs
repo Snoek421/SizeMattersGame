@@ -22,13 +22,13 @@ namespace SizeMattersGame
         public void CreateLevel1()
         {
             level1 = new List<Vector2>();
-            for (int j = 1; j < 4; j++)
+            for (int j = 1; j < 11; j++)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 14; i++)
                 {
-                    if (j > 1)
+                    if (j != 1 && j != 10)
                     {
-                        if (i != 0 && i != 9)
+                        if (i != 0 && i != 13)
                         {
                             continue;
                         }

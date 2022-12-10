@@ -35,14 +35,14 @@ namespace SizeMattersGame.Sprites
         {
             spriteBatch.Begin();
             spriteBatch.Draw(tex, Position, Color.White);
-            if (ShowRectangle)
-            {
-                this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
-                if (_rectangleTexture != null)
-                {
-                    spriteBatch.Draw(_rectangleTexture, Position, Color.Red);
-                }
-            }
+            //if (ShowRectangle)
+            //{
+            //    this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
+            //    if (_rectangleTexture != null)
+            //    {
+            //        spriteBatch.Draw(_rectangleTexture, Position, Color.Red);
+            //    }
+            //}
             spriteBatch.End();
 
             base.Draw(gameTime);

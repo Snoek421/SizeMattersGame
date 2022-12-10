@@ -25,6 +25,7 @@ namespace SizeMattersGame
 		public Game1()
 		{
 			_graphics = new GraphicsDeviceManager(this);
+			_graphics.PreferredBackBufferWidth = 840;
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 		}
