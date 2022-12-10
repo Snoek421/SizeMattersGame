@@ -21,10 +21,10 @@ namespace SizeMattersGame.GameScenes
         private SpriteBatch spriteBatch;
 
         private Player player;
-        private TopCollisionManager topCollisionManager;
-        private SideCollisionManager sideCollisionManager;
-        private List<Block> levelBlocks;
+        private CollisionManager CollisionManager;
+        private List<CollideableObject> levelBlocks;
         private List<CollideableObject> _collideables;
+        private Level level1;
 
 
 
@@ -33,7 +33,8 @@ namespace SizeMattersGame.GameScenes
             g = (Game1)game;
             spriteBatch = g._spriteBatch;
 
-            
+
+            _collideables = new List<CollideableObject>();
 
             //player character
             Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
@@ -41,22 +42,28 @@ namespace SizeMattersGame.GameScenes
             Vector2 playerPosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
             player = new Player(game, spriteBatch, playerTex, playerPosition, jumpSound);
             components.Add(player);
+            _collideables.Add(player);
 
-            //block
+            //blocks for level
             Texture2D blockTex = game.Content.Load<Texture2D>("images/testblock");
             Vector2 block1Pos = new Vector2(Shared.stage.X / 2 - blockTex.Width, Shared.stage.Y - blockTex.Height - 50);
-            Block block = new Block(game, spriteBatch, blockTex, block1Pos);
-            components.Add(block);
+            Level level = new Level(blockTex);
+            level.CreateLevel1();
+            levelBlocks = new List<CollideableObject>();
+            foreach (var levelBlock in level.level1)
+            {
+                Block block = new Block(game, spriteBatch, blockTex, levelBlock);
+                components.Add(block);
+                _collideables.Add(block);
+                levelBlocks.Add(block);
+            }
 
 
-            //sideCollisionManager = new SideCollisionManager(game, player, _levelBlocks);
-            //topCollisionManager = new TopCollisionManager(game, player, _levelBlocks);
-            //components.Add(sideCollisionManager);
-            //components.Add(topCollisionManager);
+            //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
+            //components.Add(CollisionManager);
 
-            _collideables = new List<CollideableObject>();
-            _collideables.Add(player);
-            _collideables.Add(block);
+
+
         }
 
         protected override void LoadContent()

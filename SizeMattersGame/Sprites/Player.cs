@@ -12,6 +12,7 @@ namespace SizeMattersGame.Sprites
 {
     public class Player : CollideableObject
     {
+        private Game1 g1;
         private SpriteBatch playerBatch;
 
         //sound
@@ -20,40 +21,30 @@ namespace SizeMattersGame.Sprites
         private const float PITCH = 0.05f;
         private const float PAN = 0.5f;
 
-        private int x;
-        private int y;
 
-
+        //variables to control jump
         private const int JUMP_VELOCITY = 4; //allows for a bit more of a floaty jump
         private bool hasJumped = false; //controls the flow of jump logic
         private int jumpTimer = 0;
         private const int MAX_JUMP_TIME = 15; //variables to control jump height
         private const int JUMP_STRENGTH = 7; //initial position change on jump to make it feel better
         private const float GRAVITY = 0.4f;
-        private const int SPEED = 5; //speed const for movement logic
+        private const int SPEED = 4; //speed const for movement logic
+        
+        //variables to control 
         private const float SCALE = 3f;
-
-        private float rotation;
-
-        public bool leftCollision = false;
-        public bool rightCollision = false;
-        public bool upCollision = false;
-        public bool downCollision = false;
-
         private Vector2 origin;
-        public Rectangle playerBox;
 
-        private Game1 g1;
 
         private Vector2 dimension = new Vector2(18, 18);
         private List<Rectangle> frames;
         private int frameIndex = -1;
-        private int delay;
+        //private int delay; //can delete?
         private int delayCounter;
         private const int ROWS = 7;
         private const int COLS = 5;
 
-        private bool change = false;
+        private bool formChange = false;
 
         public enum buttonState
         {
@@ -69,24 +60,11 @@ namespace SizeMattersGame.Sprites
             this.tex = tex;
             this.Position = position;
 
-            x = (int)position.X;
-            y = (int)position.Y;
-
-            origin = new Vector2(0, 0);
-            //playerBox = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
-            //rotation = 0;
+            origin = new Vector2(2, 1);
             CreateFrames();
 
             this.g1 = (Game1)game;
             jumpSound = jump;
-        }
-
-        public void ResetCollision()
-        {
-            leftCollision = false;
-            rightCollision = false;
-            upCollision = false;
-            downCollision = false;
         }
 
         private void CreateFrames()
@@ -125,7 +103,7 @@ namespace SizeMattersGame.Sprites
         private int getSpriteSize()
         {
             float size = tex.Width / COLS * SCALE;
-            int simpleSize = (int)Math.Round(size);
+            int simpleSize = (int)Math.Round(size) - 7;
             return simpleSize;
         }
 
@@ -133,7 +111,6 @@ namespace SizeMattersGame.Sprites
         bool pressed = false;
         buttonState oldState;
         KeyboardState oldKsState; //was trying to use this to prevent bouncing after landing
-        bool formChange = false;
 
         public override void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
@@ -158,16 +135,6 @@ namespace SizeMattersGame.Sprites
                     Velocity.Y = -JUMP_VELOCITY;
                     hasJumped = true;
                 }
-            }
-            if (Position.Y >= Shared.stage.Y - playerBox.Height)
-            {
-                Velocity.Y = 0;
-                jumpTimer = 0;
-                hasJumped = false;
-            }
-            if (Position.Y <= Shared.stage.Y - playerBox.Height && hasJumped == true)
-            {
-                Velocity.Y += GRAVITY * 1;
             }
 
 
@@ -204,9 +171,8 @@ namespace SizeMattersGame.Sprites
 
             }
 
-            if (ks.IsKeyDown(Keys.Right) && rightCollision != true)
+            if (ks.IsKeyDown(Keys.Right))
             {
-                leftCollision = false;
                 if (pressed == false)
                 {
                     frameIndex = 5;
@@ -349,13 +315,13 @@ namespace SizeMattersGame.Sprites
                 }
             }
 
+            bool onGround = false;
             foreach (var collideable in collideables)
             {
                 if (collideable == this)
                 {
                     continue;
                 }
-
                 if (this.Velocity.Y < 0 && this.CollidingTop(collideable))
                 {
                     this.Velocity.Y = 0;
@@ -368,10 +334,7 @@ namespace SizeMattersGame.Sprites
 
                     jumpTimer = 0;
                     hasJumped = false;
-                }
-                else
-                {
-                    Velocity.Y += GRAVITY * 1;
+                    onGround = true;
                 }
                 if (this.Velocity.X > 0 && this.CollidingLeft(collideable))
                 {
@@ -382,6 +345,10 @@ namespace SizeMattersGame.Sprites
                     this.Velocity.X = 0;
                 }
             }
+            if (!onGround)
+            {
+                Velocity.Y += GRAVITY * 1;
+            }
 
 
             Position += Velocity;
@@ -391,7 +358,7 @@ namespace SizeMattersGame.Sprites
 
         public override Rectangle GetBounds()
         {
-            return new Rectangle((int)Position.X, (int)Position.Y, getSpriteSize(), getSpriteSize());
+            return new Rectangle((int)Position.X, (int)Position.Y, getSpriteSize() - 5, getSpriteSize());
         }
 
         public override void Draw(GameTime gameTime)
@@ -399,13 +366,13 @@ namespace SizeMattersGame.Sprites
             if (frameIndex >= 0)
             {
                 playerBatch.Begin();
-                playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, rotation, origin, SCALE, SpriteEffects.None, 1);
+                playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, 0, origin, SCALE, SpriteEffects.None, 1);
                 if (ShowRectangle)
                 {
                     this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
                     if (_rectangleTexture != null)
                     {
-                        playerBatch.Draw(_rectangleTexture, Position, Color.Red);
+                        //playerBatch.Draw(_rectangleTexture, Position, Color.Red);
                     }
                 }
                 playerBatch.End();

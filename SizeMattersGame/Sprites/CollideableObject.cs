@@ -78,7 +78,7 @@ namespace SizeMattersGame.Sprites
             Rectangle spriteBox = sprite.GetBounds();
             if (rectangle.Right + this.Velocity.X > spriteBox.Left &&
                 rectangle.Left < spriteBox.Left &&
-                rectangle.Bottom > spriteBox.Top &&
+                rectangle.Bottom - 5 > spriteBox.Top &&
                 rectangle.Top < spriteBox.Bottom)
             {
                 return true;
@@ -95,7 +95,7 @@ namespace SizeMattersGame.Sprites
             Rectangle spriteBox = sprite.GetBounds();
             if (rectangle.Left + this.Velocity.X < spriteBox.Right &&
                 rectangle.Right > spriteBox.Right &&
-                rectangle.Bottom > spriteBox.Top &&
+                rectangle.Bottom - 5 > spriteBox.Top &&
                 rectangle.Top < spriteBox.Bottom)
             {
                 return true;
