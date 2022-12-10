@@ -31,12 +31,12 @@ namespace SizeMattersGame
 				if (playerRect.Intersects(levelRect) && playerRect.Right >= levelRect.Left && playerRect.Top > levelRect.Top)
 				{
 					player.rightCollision = true;
-					player.position.X = levelRect.Left + playerRect.Width;
+					player.Position.X = levelRect.Left + playerRect.Width;
 				}
 				else if (playerRect.Intersects(levelRect) && playerRect.Left <= levelRect.Right && playerRect.Top > levelRect.Top)
 				{
 					player.leftCollision = true;
-					player.position.X = levelRect.Right;
+					player.Position.X = levelRect.Right;
 				}
 				if (!playerRect.Intersects(levelRect))
 				{

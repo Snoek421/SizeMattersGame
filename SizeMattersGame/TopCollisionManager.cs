@@ -34,7 +34,7 @@ namespace SizeMattersGame
 				levelRect = item.GetBounds();
 				if (playerRect.Intersects(levelRect) && playerRect.Bottom >= levelRect.Top && playerRect.Top < levelRect.Bottom)
 				{
-					player.position.Y = levelRect.Top - playerRect.Height;
+					player.Position.Y = levelRect.Top - playerRect.Height;
 					player.downCollision = true;
 				}
 

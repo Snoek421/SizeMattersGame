@@ -9,18 +9,16 @@ using System.Threading.Tasks;
 
 namespace SizeMattersGame.Sprites
 {
-    public class Block : DrawableGameComponent, ICollideableObject
+    public class Block : CollideableObject
     {
         public SpriteBatch spriteBatch { get; set; }
-        public Texture2D tex { get; set; }
-        public Vector2 position { get; set; }
 
 
         public Block(Game game, SpriteBatch spriteBatch, Texture2D tex, Vector2 position) : base(game)
         {
             this.spriteBatch = spriteBatch;
             this.tex = tex;
-            this.position = position;
+            this.Position = position;
         }
 
         public override void Update(GameTime gameTime)
@@ -34,15 +32,11 @@ namespace SizeMattersGame.Sprites
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(tex, position, Color.White);
+            spriteBatch.Draw(tex, Position, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        public Rectangle GetBounds()
-        {
-            return new Rectangle((int)position.X, (int)position.Y, tex.Width, tex.Height);
-        }
     }
 }

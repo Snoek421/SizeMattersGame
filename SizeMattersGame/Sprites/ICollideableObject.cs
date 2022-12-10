@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SizeMattersGame
+namespace SizeMattersGame.Sprites
 {
-	public interface ICollideableObject
-	{
-		Rectangle GetBounds();
-	}
+    public interface ICollideableObject
+    {
+        Rectangle GetBounds();
+    }
 }

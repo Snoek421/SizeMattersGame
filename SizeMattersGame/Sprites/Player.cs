@@ -10,10 +10,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SizeMattersGame.Sprites
 {
-    public class Player : DrawableGameComponent, ICollideableObject
+    public class Player : CollideableObject
     {
         private SpriteBatch playerBatch;
-        public Texture2D tex;
 
         //sound
         private SoundEffect jumpSound; //downloaded from freesound.org https://freesound.org/s/369515/
@@ -21,14 +20,12 @@ namespace SizeMattersGame.Sprites
         private const float PITCH = 0.05f;
         private const float PAN = 0.5f;
 
-        public Vector2 position;
         private int x;
         private int y;
 
 
         private const int JUMP_VELOCITY = 4; //allows for a bit more of a floaty jump
         private bool hasJumped = false; //controls the flow of jump logic
-        public Vector2 velocity = new Vector2(0, 0); //for controlling movement in general
         private int jumpTimer = 0;
         private const int MAX_JUMP_TIME = 15; //variables to control jump height
         private const int JUMP_STRENGTH = 7; //initial position change on jump to make it feel better
@@ -70,14 +67,14 @@ namespace SizeMattersGame.Sprites
         {
             this.playerBatch = playerBatch;
             this.tex = tex;
-            this.position = position;
+            this.Position = position;
 
             x = (int)position.X;
             y = (int)position.Y;
 
-            origin = new Vector2(tex.Width / ROWS / 2, tex.Height / COLS / 2);   //(tex.Width / 2, tex.Height / 2);
-            playerBox = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
-            rotation = 0;
+            origin = new Vector2(tex.Width / ROWS, tex.Height / COLS);   //(tex.Width / 2, tex.Height / 2);
+            //playerBox = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
+            //rotation = 0;
             CreateFrames();
 
             this.game = game;
@@ -125,12 +122,26 @@ namespace SizeMattersGame.Sprites
             show();
         }
 
+        private void move()
+        {
+            KeyboardState ks = Keyboard.GetState();
+            if(ks.IsKeyDown(Keys.Left))
+            {
+                base.Velocity.X = -SPEED;
+            }
+            else if (ks.IsKeyDown(Keys.Right))
+            {
+                Velocity.X = SPEED;
+            }
+
+        }
+
         bool pressed = false;
         buttonState oldState;
         KeyboardState oldKsState; //was trying to use this to prevent bouncing after landing
         bool formChange = false;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
             KeyboardState ks = Keyboard.GetState();
 
@@ -142,16 +153,15 @@ namespace SizeMattersGame.Sprites
                     jumpSound.Play(VOLUME, PITCH, PAN);
                 }
                 jumpTimer++;
-                if (jumpTimer >= MAX_JUMP_TIME && downCollision != true)
+                if (jumpTimer >= MAX_JUMP_TIME)
                 {
-                    velocity.Y += GRAVITY * 1;
+                    Velocity.Y += GRAVITY * 1;
                 }
                 if (jumpTimer < MAX_JUMP_TIME)
                 {
-                    position.Y -= JUMP_STRENGTH;
-                    velocity.Y = -JUMP_VELOCITY;
+                    Position.Y -= JUMP_STRENGTH;
+                    Velocity.Y = -JUMP_VELOCITY;
                     hasJumped = true;
-                    downCollision = false;
                 }
             }
 
@@ -173,26 +183,20 @@ namespace SizeMattersGame.Sprites
             //{
             //	velocity.Y += GRAVITY * 1;
             //}
-            if (position.Y >= Shared.stage.Y - playerBox.Height || downCollision == true)
+            if (Position.Y >= Shared.stage.Y - playerBox.Height)
             {
-                velocity.Y = 0;
+                Velocity.Y = 0;
                 jumpTimer = 0;
-                downCollision = true;
                 hasJumped = false;
             }
-            if (position.Y <= Shared.stage.Y - playerBox.Height && hasJumped == true || downCollision == false)
+            if (Position.Y <= Shared.stage.Y - playerBox.Height && hasJumped == true)
             {
-                velocity.Y += GRAVITY * 1;
+                Velocity.Y += GRAVITY * 1;
             }
 
 
-            if (ks.IsKeyDown(Keys.Left) && leftCollision != true)
+            if (ks.IsKeyDown(Keys.Left) )
             {
-                rightCollision = false;
-                if (true)
-                {
-
-                }
                 if (pressed == false)
                 {
                     frameIndex = 8;
@@ -211,7 +215,7 @@ namespace SizeMattersGame.Sprites
                         }
                     }
                 }
-                velocity.X = -SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
+                Velocity.X = -SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
                 oldState = buttonState.leftPressed;
 
             }
@@ -220,7 +224,7 @@ namespace SizeMattersGame.Sprites
                 restart();
                 pressed = false;
                 oldState = buttonState.leftReleased;
-                velocity.X = 0;
+                Velocity.X = 0;
 
             }
 
@@ -245,7 +249,7 @@ namespace SizeMattersGame.Sprites
                         }
                     }
                 }
-                velocity.X = SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
+                Velocity.X = SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
                 oldState = buttonState.rightPressed;
             }
             else if (ks.IsKeyUp(Keys.Right) && oldState == buttonState.rightPressed)
@@ -253,7 +257,7 @@ namespace SizeMattersGame.Sprites
                 restart();
                 pressed = false;
                 oldState = buttonState.rightReleased;
-                velocity.X = 0;
+                Velocity.X = 0;
             }
 
             if (ks.IsKeyDown(Keys.W))
@@ -368,7 +372,34 @@ namespace SizeMattersGame.Sprites
                     }
                 }
             }
-            position += velocity;
+
+            foreach (var collideable in collideables)
+            {
+                if (collideable == this)
+                {
+                    continue;
+                }
+
+                if (this.Velocity.Y > 0 && this.CollidingBottom(collideable))
+                {
+                    this.Velocity.Y = 0;
+                }
+                if (this.Velocity.Y < 0 && this.CollidingTop(collideable))
+                {
+                    this.Velocity.Y = 0;
+                }
+                if (this.Velocity.X > 0 && this.CollidingLeft(collideable))
+                {
+                    this.Velocity.X = 0;
+                }
+                if (this.Velocity.X < 0 && this.CollidingRight(collideable))
+                {
+                    this.Velocity.X = 0;
+                }
+            }
+
+
+            Position += Velocity;
             oldKsState = ks;
             base.Update(gameTime);
         }
@@ -378,16 +409,12 @@ namespace SizeMattersGame.Sprites
             if (frameIndex >= 0)
             {
                 playerBatch.Begin();
-                playerBatch.Draw(tex, position, frames[frameIndex], Color.White, rotation, origin, SCALE, SpriteEffects.None, 1);
+                playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, rotation, origin, SCALE, SpriteEffects.None, 1);
                 playerBatch.End();
             }
 
             base.Draw(gameTime);
         }
 
-        public Rectangle GetBounds()
-        {
-            return new Rectangle((int)position.X, (int)position.Y, frames[1].Width, frames[1].Height);
-        }
     }
 }

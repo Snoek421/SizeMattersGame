@@ -23,7 +23,8 @@ namespace SizeMattersGame.GameScenes
         private Player player;
         private TopCollisionManager topCollisionManager;
         private SideCollisionManager sideCollisionManager;
-        private List<ICollideableObject> levelBlocks = new List<ICollideableObject>();
+        private List<Block> levelBlocks;
+        private List<CollideableObject> _collideables;
 
 
 
@@ -43,17 +44,19 @@ namespace SizeMattersGame.GameScenes
 
             //block
             Texture2D blockTex = game.Content.Load<Texture2D>("images/testblock");
-            Vector2 block1Pos = new Vector2(Shared.stage.X / 2 - blockTex.Width, Shared.stage.Y - blockTex.Height - 30);
+            Vector2 block1Pos = new Vector2(Shared.stage.X / 2 - blockTex.Width, Shared.stage.Y - blockTex.Height - 50);
             Block block = new Block(game, spriteBatch, blockTex, block1Pos);
             components.Add(block);
-            levelBlocks.Add(block);
-
-            sideCollisionManager = new SideCollisionManager(game, player, levelBlocks);
-            topCollisionManager = new TopCollisionManager(game, player, levelBlocks);
-            components.Add(sideCollisionManager);
-            components.Add(topCollisionManager);
 
 
+            //sideCollisionManager = new SideCollisionManager(game, player, _levelBlocks);
+            //topCollisionManager = new TopCollisionManager(game, player, _levelBlocks);
+            //components.Add(sideCollisionManager);
+            //components.Add(topCollisionManager);
+
+            _collideables = new List<CollideableObject>();
+            _collideables.Add(player);
+            _collideables.Add(block);
         }
 
         protected override void LoadContent()
@@ -64,6 +67,10 @@ namespace SizeMattersGame.GameScenes
 
         public override void Update(GameTime gameTime)
         {
+            foreach (var collideable in _collideables)
+            {
+                collideable.Update(gameTime, _collideables);
+            }
             base.Update(gameTime);
         }
 
