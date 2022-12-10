@@ -374,11 +374,11 @@ namespace SizeMattersGame.Sprites
                     continue;
                 }
 
-                if (this.Velocity.Y < 0 && this.CollidingBottom(collideable))
+                if (this.Velocity.Y < 0 && this.CollidingTop(collideable))
                 {
                     this.Velocity.Y = 0;
                 }
-                if (this.Velocity.Y > 0 && this.CollidingTop(collideable))
+                if (this.Velocity.Y > 0 && this.CollidingBottom(collideable))
                 {
                     this.Velocity.Y = 0;
                 }

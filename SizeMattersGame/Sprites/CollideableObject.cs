@@ -38,7 +38,7 @@ namespace SizeMattersGame.Sprites
             return new Rectangle((int)Position.X, (int)Position.Y, tex.Width, tex.Height);
         }
 
-        public bool CollidingTop(CollideableObject sprite)
+        public bool CollidingBottom(CollideableObject sprite)
         {
             Rectangle rectangle = this.GetBounds();
             Rectangle spriteBox = sprite.GetBounds();
@@ -55,7 +55,7 @@ namespace SizeMattersGame.Sprites
             }
         }
 
-        public bool CollidingBottom(CollideableObject sprite)
+        public bool CollidingTop(CollideableObject sprite)
         {
             Rectangle rectangle = this.GetBounds();
             Rectangle spriteBox = sprite.GetBounds();
@@ -116,8 +116,6 @@ namespace SizeMattersGame.Sprites
         /// <param name="game"></param>
         /// <param name="graphicsDevice"></param>
         /// <param name="texture"></param>
-
-
         public void SetRectangleTexture(GraphicsDevice graphicsDevice, Rectangle texture)
         {
             var colours = new List<Color>();
