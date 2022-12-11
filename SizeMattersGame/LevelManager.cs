@@ -69,11 +69,26 @@ namespace SizeMattersGame
             {
                 Level2.Clear();
             }
-            for (int i = 5; i < 11; i++)
+            for (int i = 5; i < 10; i++)
             {
-                for (int j = 1; j < 4; j++)
+                for (int j = 2; j <= 5; j++)
                 {
-                    Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                    if (j == 2 && i > 5)
+                    {
+                        Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                    }
+                    else if (j == 3 && i > 6)
+                    {
+                        Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                    }
+                    else if(j == 4 && i >7)
+                    {
+                        Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                    }
+                    else if(j == 5  && i >8)
+                    {
+                        Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                    }
                 }
             }
         }
