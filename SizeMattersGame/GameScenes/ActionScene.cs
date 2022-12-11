@@ -35,6 +35,8 @@ namespace SizeMattersGame.GameScenes
         private int previousSecond;
         private SpriteFont regularFont, highlightFont;
         private Vector2 timerPosition = new Vector2(70, 70);
+        private Vector2 scorePosition = new Vector2(Shared.stage.X - 300, 70);
+        private Vector2 centerScreen = new Vector2(Shared.stage.X / 2 - 200, Shared.stage.Y / 2 - 100);
 
 
         //added elements
@@ -42,7 +44,10 @@ namespace SizeMattersGame.GameScenes
         private gameObject button;
 
         InteractableObjectCollision test;
-        public bool stageCleared = false;
+
+        //stage transition control
+        public bool stageCompleted = false;
+        private bool scoreScreen = false;
 
 
         public ActionScene(Game game) : base(game)
@@ -56,7 +61,7 @@ namespace SizeMattersGame.GameScenes
             _level1 = new List<CollideableObject>();
             _level2 = new List<CollideableObject>();
 
-            //ready fonts for displaying congratulations
+            //ready fonts for displaying congratulations and scores
             SpriteFont regular = g.Content.Load<SpriteFont>("fonts/regularFont");
             SpriteFont hilight = g.Content.Load<SpriteFont>("fonts/highlightFont");
             regularFont = regular;
@@ -117,13 +122,23 @@ namespace SizeMattersGame.GameScenes
             this._collideables.Clear();
         }
 
+        private void addBorders()
+        {
+            foreach (var block in _borders)
+            {
+                this.components.Add(block);
+                this._collideables.Add(block);
+            }
+        }
+
         /// <summary>
         /// Adds and resets the main core things required for each level. The button, door, border blocks, player, InteractableObjectCollision, and set up the collideables list
         /// </summary>
         private void addMainComponents()
         {
             _timer = 60;
-            stageCleared = false;
+            player.Score = 0;
+            stageCompleted = false;
             this.button.isActive = false;
             this.door.isActive = false;
             this.components.Add(player);
@@ -131,12 +146,9 @@ namespace SizeMattersGame.GameScenes
             this.components.Add(door);
             this.components.Add(test);
             this._collideables.Add(player);
-            foreach (var block in _borders)
-            {
-                this.components.Add(block);
-                this._collideables.Add(block);
-            }
+            addBorders();
         }
+
 
         public void LoadLevel1()
         {
@@ -157,6 +169,7 @@ namespace SizeMattersGame.GameScenes
 
         public override void Update(GameTime gameTime)
         {
+            KeyboardState ks = Keyboard.GetState();
             bool levelChanged = false;
             foreach (var collideable in _collideables)
             {
@@ -164,32 +177,52 @@ namespace SizeMattersGame.GameScenes
             }
             base.Update(gameTime);
 
-            _timer -= gameTime.ElapsedGameTime.TotalSeconds;
-            secondTimer = (int)Math.Round(_timer);
-
-            if (stageCleared == true)
+            if (scoreScreen)
             {
-                player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
-                if (currentLevel == 1 && levelChanged == false)
+                player.Score = secondTimer * 200;
+            }
+            else
+            {
+                _timer -= gameTime.ElapsedGameTime.TotalSeconds;
+                secondTimer = (int)Math.Round(_timer);
+            }
+
+            if (stageCompleted == true && scoreScreen == true)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
-                    clearLevel();
-                    addMainComponents();
-                    foreach (var levelBlock in _level2)
+                    scoreScreen = false;
+                    stageCompleted = false;
+                    player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
+                    if (currentLevel == 1 && levelChanged == false)
                     {
-                        this.components.Add(levelBlock);
-                        this._collideables.Add(levelBlock);
+                        clearLevel();
+                        addMainComponents();
+                        foreach (var levelBlock in _level2)
+                        {
+                            this.components.Add(levelBlock);
+                            this._collideables.Add(levelBlock);
+                        }
+                        currentLevel++;
+                        levelChanged = true;
                     }
-                    currentLevel = 2;
-                    levelChanged = true;
+                    if (currentLevel == 2 && levelChanged == false)
+                    {
+                        clearLevel();
+                        addMainComponents();
+                        levelChanged = true;
+                    }
                 }
-                if (currentLevel == 2 && levelChanged == false)
+            }
+
+            if (stageCompleted == true)
+            {
+                if (scoreScreen == false)
                 {
                     clearLevel();
-                    addMainComponents();
-                    levelChanged = true;
+                    addBorders();
+                    scoreScreen = true;
                 }
-
-
             }
 
         }
@@ -205,14 +238,27 @@ namespace SizeMattersGame.GameScenes
             }
             base.Draw(gameTime);
 
-            if (secondTimer != previousSecond)
+            if (scoreScreen)
             {
-                spriteBatch.DrawString(highlightFont, $"Time: {secondTimer}", timerPosition, Color.Black);
+                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: 0 x 1500\n\nPlease press enter to continue";
+                spriteBatch.DrawString(regularFont, scoreScreenMessage, centerScreen, Color.Maroon);
+
             }
             else
             {
-                spriteBatch.DrawString(highlightFont, $"Time: {previousSecond}", timerPosition, Color.Black);
+                if (secondTimer != previousSecond)
+                {
+                    spriteBatch.DrawString(highlightFont, $"Time: {secondTimer}", timerPosition, Color.Black);
+                    spriteBatch.DrawString(highlightFont, $"Score: {player.Score}", scorePosition, Color.Black);
+                }
+                else
+                {
+                    spriteBatch.DrawString(highlightFont, $"Time: {previousSecond}", timerPosition, Color.Black);
+                    spriteBatch.DrawString(highlightFont, $"Score: {player.Score}", scorePosition, Color.Black);
+                }
             }
+
+
             previousSecond = secondTimer;
             spriteBatch.End();
         }

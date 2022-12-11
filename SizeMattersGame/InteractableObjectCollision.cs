@@ -40,7 +40,7 @@ namespace SizeMattersGame
 
             if (playerRect.Intersects(door.objectRect) && door.isActive == true)
             {
-                scene.stageCleared = true;
+                scene.stageCompleted = true;
             }
 
 
