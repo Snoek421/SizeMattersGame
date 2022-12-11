@@ -227,7 +227,7 @@ namespace SizeMattersGame.GameScenes
                         door.position = levelManager.Level2Objects[0];
                         button.position = levelManager.Level2Objects[1];
                         this.components.Add(door);
-                        this.components.Add(button);
+                        this.components.Add(button);                        
                         collisionManager.door = door;
                         collisionManager.button = button;
                         currentLevel++;
