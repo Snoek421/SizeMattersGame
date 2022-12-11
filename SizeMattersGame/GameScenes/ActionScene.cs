@@ -44,6 +44,8 @@ namespace SizeMattersGame.GameScenes
         //added elements
         private gameObject door;
         private gameObject button;
+        private gameObject battery;
+        public int batteries = 0;
 
         InteractableObjectCollision test;
 
@@ -116,7 +118,11 @@ namespace SizeMattersGame.GameScenes
             button = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[1], 5);
             components.Add(button);
 
-            test = new InteractableObjectCollision(game, player, door, button, this);
+            objPos = new Vector2(Shared.stage.X - 240, 200);
+            battery = new gameObject(game, spriteBatch, objectTex, objPos, 0);
+            components.Add(battery);
+
+            test = new InteractableObjectCollision(game, player, door, button, battery, this);
             components.Add(test);
 
         }
@@ -146,9 +152,12 @@ namespace SizeMattersGame.GameScenes
             stageCompleted = false;
             this.button.isActive = false;
             this.door.isActive = false;
+            this.battery.isActive = false;
+            this.battery.Visible = true;
             this.components.Add(player);
-            //this.components.Add(button);
-            //this.components.Add(door);
+            this.components.Add(button);
+            this.components.Add(door);
+            this.components.Add(battery);
             this.components.Add(test);
             this._collideables.Add(player);
             addBorders();
@@ -255,7 +264,7 @@ namespace SizeMattersGame.GameScenes
 
             if (scoreScreen)
             {
-                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: 0 x 1500\n\nPress enter to go to the next level";
+                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: {batteries} x 1500\n\nPress enter to go to the next level";
                 spriteBatch.DrawString(regularFont, scoreScreenMessage, centerScreen, Color.Maroon);
 
             }

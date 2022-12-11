@@ -19,12 +19,17 @@ namespace SizeMattersGame
 
         public gameObject button;
 
+        private gameObject battery;
+
+        private int firstTime = 0;
+
         ActionScene scene;
-        public InteractableObjectCollision(Game game, Player player, gameObject door, gameObject button, ActionScene scene) : base(game)
+        public InteractableObjectCollision(Game game, Player player, gameObject door, gameObject button, gameObject battery, ActionScene scene) : base(game)
         {
             this.player = player;
             this.door = door;
             this.button = button;
+            this.battery = battery;
             this.scene = scene;
         }
 
@@ -41,6 +46,16 @@ namespace SizeMattersGame
             if (playerRect.Intersects(door.objectRect) && door.isActive == true)
             {
                 scene.stageCompleted = true;
+                firstTime = 0;
+            }
+
+            if (playerRect.Intersects(battery.objectRect) && firstTime == 0)
+            {
+                battery.isActive = true;
+                battery.Visible = false;
+                player.Score += 1500;
+                scene.batteries++;
+                firstTime++;
             }
 
 
