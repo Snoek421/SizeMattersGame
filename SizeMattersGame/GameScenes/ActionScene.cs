@@ -84,6 +84,11 @@ namespace SizeMattersGame.GameScenes
             }
 
 
+            Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
+            Vector2 objPos = new Vector2(200, 200);
+            gameObject door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
+            components.Add(door);
+
             //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
             //components.Add(CollisionManager);
         }
@@ -119,31 +124,6 @@ namespace SizeMattersGame.GameScenes
                 collideable.Update(gameTime, _collideables);
             }
             base.Update(gameTime);
-
-            if (player.GetBounds().Right > Shared.stage.X)
-            {
-                player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
-                if (currentLevel == 1 && levelChanged == false)
-                {
-                    clearLevel();
-                    addMainComponents();
-                    foreach (var levelBlock in _level2)
-                    {
-                        this.components.Add(levelBlock);
-                        this._collideables.Add(levelBlock);
-                    }
-                    currentLevel = 2;
-                    levelChanged = true;
-                }
-                if (currentLevel == 2 && levelChanged == false)
-                {
-                    clearLevel();
-                    addMainComponents();
-                    levelChanged = true;
-                }
-
-
-            }
         }
 
         public override void Draw(GameTime gameTime)
