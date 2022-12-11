@@ -23,7 +23,11 @@ namespace SizeMattersGame
         private int x;
         private int y;
 
-        public Rectangle objectRect;
+        public Rectangle objectRect { get
+            {
+                return new Rectangle((int)position.X, (int)position.Y, objectTexture.Width / ROWS, objectTexture.Height / COLS);
+            }
+        }
 
         private Vector2 dimension = new Vector2(18, 18);
         private List<Rectangle> sprites;
@@ -42,10 +46,11 @@ namespace SizeMattersGame
             this.objectTexture = tex;
             this.position = position;
 
-
+            this.x = (int)position.X;
+            this.y = (int)position.Y;
 
             origin = new Vector2(2, 1);
-            objectRect = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
+            //objectRect = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
 
             this.baseSprite = sprite;
             objectSprite = sprite;
