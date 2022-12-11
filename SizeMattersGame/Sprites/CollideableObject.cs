@@ -10,13 +10,13 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SizeMattersGame.Sprites
 {
-	public class CollideableObject : DrawableGameComponent, ICollideableObject
-	{
+    public class CollideableObject : DrawableGameComponent, ICollideableObject
+    {
 
         public Game1 _game;
         public Texture2D tex;
-		public Vector2 Position;
-		public Vector2 Velocity;
+        public Vector2 Position;
+        public Vector2 Velocity;
 
         public bool ShowRectangle { get; set; } = true;
 

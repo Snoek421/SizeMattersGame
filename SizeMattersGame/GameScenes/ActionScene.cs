@@ -22,10 +22,14 @@ namespace SizeMattersGame.GameScenes
 
         private Player player;
         private CollisionManager CollisionManager;
-        private List<CollideableObject> levelBlocks;
         private List<CollideableObject> _collideables;
-        private Level level1;
-
+        private List<CollideableObject> _borders;
+        private List<CollideableObject> _level1;
+        private List<CollideableObject> _level2;
+        private LevelManager levelManager;
+        private int currentLevel = 1;
+        private SpriteFont regularFont, highlightFont;
+        private Vector2 messagePosition;
 
 
         public ActionScene(Game game) : base(game)
@@ -33,37 +37,72 @@ namespace SizeMattersGame.GameScenes
             g = (Game1)game;
             spriteBatch = g._spriteBatch;
 
-
             _collideables = new List<CollideableObject>();
+            _borders = new List<CollideableObject>();
+            _level1 = new List<CollideableObject>();
+            _level2 = new List<CollideableObject>();
+
+            //ready fonts
+            SpriteFont regular = g.Content.Load<SpriteFont>("fonts/regularFont");
+            SpriteFont hilight = g.Content.Load<SpriteFont>("fonts/highlightFont");
+            regularFont = regular;
+            highlightFont = hilight;
+            messagePosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
 
             //player character
             Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
             SoundEffect jumpSound = game.Content.Load<SoundEffect>("sound/jumpSound");
-            Vector2 playerPosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
+            Vector2 playerPosition = new Vector2(0 + 65, Shared.stage.Y / 2);
             player = new Player(game, spriteBatch, playerTex, playerPosition, jumpSound);
-            components.Add(player);
+            this.components.Add(player);
             _collideables.Add(player);
 
             //blocks for level
-            Texture2D blockTex = game.Content.Load<Texture2D>("images/testblock");
-            Vector2 block1Pos = new Vector2(Shared.stage.X / 2 - blockTex.Width, Shared.stage.Y - blockTex.Height - 50);
-            Level level = new Level(blockTex);
-            level.CreateLevel1();
-            levelBlocks = new List<CollideableObject>();
-            foreach (var levelBlock in level.level1)
+            Texture2D blockTex = game.Content.Load<Texture2D>("images/testblock"); //load block texture
+            levelManager = new LevelManager(blockTex); //create level instance to control level position lists
+            levelManager.CreateLevels();
+            foreach (var borderBlock in levelManager.borders)
+            {
+                Block block = new Block(game, spriteBatch, blockTex, borderBlock);
+                _borders.Add(block);
+                this.components.Add(block);
+                _collideables.Add(block);
+            }
+
+            foreach (var levelBlock in levelManager.Level1)
             {
                 Block block = new Block(game, spriteBatch, blockTex, levelBlock);
-                components.Add(block);
+                _level1.Add(block);
+                this.components.Add(block);
                 _collideables.Add(block);
-                levelBlocks.Add(block);
+            }
+
+            foreach (var levelBlock in levelManager.Level2)
+            {
+                Block block = new Block(game, spriteBatch, blockTex, levelBlock);
+                _level2.Add(block);
             }
 
 
             //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
             //components.Add(CollisionManager);
+        }
 
+        private void clearLevel()
+        {
+            this.components.Clear();
+            this._collideables.Clear();
+        }
 
-
+        private void addMainComponents()
+        {
+            this.components.Add(player);
+            this._collideables.Add(player);
+            foreach (var block in _borders)
+            {
+                this.components.Add(block);
+                this._collideables.Add(block);
+            }
         }
 
         protected override void LoadContent()
@@ -74,11 +113,37 @@ namespace SizeMattersGame.GameScenes
 
         public override void Update(GameTime gameTime)
         {
+            bool levelChanged = false;
             foreach (var collideable in _collideables)
             {
                 collideable.Update(gameTime, _collideables);
             }
             base.Update(gameTime);
+
+            if (player.GetBounds().Right > Shared.stage.X)
+            {
+                player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
+                if (currentLevel == 1 && levelChanged == false)
+                {
+                    clearLevel();
+                    addMainComponents();
+                    foreach (var levelBlock in _level2)
+                    {
+                        this.components.Add(levelBlock);
+                        this._collideables.Add(levelBlock);
+                    }
+                    currentLevel = 2;
+                    levelChanged = true;
+                }
+                if (currentLevel == 2 && levelChanged == false)
+                {
+                    clearLevel();
+                    addMainComponents();
+                    levelChanged = true;
+                }
+
+
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -88,6 +153,11 @@ namespace SizeMattersGame.GameScenes
             foreach (var collideable in _collideables)
             {
                 collideable.Draw(gameTime);
+            }
+
+            if (currentLevel == 3)
+            {
+               
             }
             base.Draw(gameTime);
         }

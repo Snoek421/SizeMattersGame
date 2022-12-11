@@ -325,6 +325,7 @@ namespace SizeMattersGame.Sprites
                 if (this.Velocity.Y < 0 && this.CollidingTop(collideable))
                 {
                     this.Velocity.Y = 0;
+                    jumpTimer = MAX_JUMP_TIME;
                 }
                 if (this.Velocity.Y >= 0 && this.CollidingBottom(collideable))
                 {
