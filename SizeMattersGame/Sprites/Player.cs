@@ -15,6 +15,9 @@ namespace SizeMattersGame.Sprites
         private Game1 g1;
         private SpriteBatch playerBatch;
 
+        //variable for score
+        public int Score { get; set; }
+
         //sound
         private SoundEffect jumpSound; //downloaded from freesound.org https://freesound.org/s/369515/
         private const float VOLUME = 0.15f;

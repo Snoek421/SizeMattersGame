@@ -91,13 +91,12 @@ namespace SizeMattersGame.GameScenes
                 _level2.Add(block);
             }
 
-            //
+            //door, button, battery, and collision
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
             Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
             door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
             components.Add(door);
 
-            objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
             objPos = new Vector2(Shared.stage.X - 240, Shared.stage.Y - 108);
             button = new gameObject(game, spriteBatch, objectTex, objPos, 5);
             components.Add(button);
@@ -105,8 +104,6 @@ namespace SizeMattersGame.GameScenes
             test = new InteractableObjectCollision(game, player, door, button, this);
             components.Add(test);
 
-            //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
-            //components.Add(CollisionManager);
         }
 
         private void clearLevel()
@@ -115,6 +112,9 @@ namespace SizeMattersGame.GameScenes
             this._collideables.Clear();
         }
 
+        /// <summary>
+        /// Adds and resets the main core things required for each level. The button, door, border blocks, player, InteractableObjectCollision, and set up the collideables list
+        /// </summary>
         private void addMainComponents()
         {
             stageCleared = false;
