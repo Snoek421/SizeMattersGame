@@ -34,21 +34,22 @@ namespace SizeMattersGame.Sprites
         private const float GRAVITY = 0.4f;
         private const int SPEED = 4; //speed const for movement logic
         
-        //variables to control 
+        //variables to control
         private const float SCALE = 3f;
         private Vector2 origin;
 
-
+        //varibles for the animation
         private Vector2 dimension = new Vector2(18, 18);
         private List<Rectangle> frames;
         private int frameIndex = -1;
-        //private int delay; //can delete?
         private int delayCounter;
         private const int ROWS = 7;
         private const int COLS = 5;
 
+        //variable for the "form" Change
         private bool formChange = false;
 
+        //variables to smooth controls and animation
         public enum buttonState
         {
             rightPressed,
@@ -57,6 +58,11 @@ namespace SizeMattersGame.Sprites
             leftReleased
             
         }
+        bool pressed = false;
+        buttonState oldState;
+        bool transformation = false;
+        string form = "";
+
 
         public Player(Game game, SpriteBatch playerBatch, Texture2D tex, Vector2 position, SoundEffect jump) : base(game)
         {
@@ -101,7 +107,6 @@ namespace SizeMattersGame.Sprites
         {
             frameIndex = 0;
             delayCounter = 0;
-            show();
         }
 
         private int getSpriteSize()
@@ -111,14 +116,11 @@ namespace SizeMattersGame.Sprites
             return simpleSize;
         }
 
-
-        bool pressed = false;
-        buttonState oldState;
+        
 
         public override void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
             KeyboardState ks = Keyboard.GetState();
-
 
             //jump logic
             if (ks.IsKeyDown(Keys.Space))
@@ -240,23 +242,41 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.S))
             {
+                form = "small";
+                transformation = true;
+            }
+
+            if (ks.IsKeyDown(Keys.A))
+            {
+                form = "thin";
+                transformation = true;
+            }
+
+            if (ks.IsKeyDown(Keys.D))
+            {
+                form = "thick";
+                transformation = true;
+            }
+
+            if (transformation == true && form == "small")
+            {
                 formChange = true;
 
                 if (pressed == false)
                 {
                     frameIndex = 11;
-                    delayCounter = 0;
                     pressed = true;
                 }
                 else if (pressed == true)
                 {
                     delayCounter++;
+
                     if (delayCounter > 2)
                     {
                         if (frameIndex < 28)
                         {
                             frameIndex++;
-                            delayCounter = 0;
+                            
                             if (frameIndex == 15)
                             {
                                 frameIndex = 24;
@@ -264,19 +284,16 @@ namespace SizeMattersGame.Sprites
 
                             if (frameIndex == 28)
                             {
-                                //frameIndex = 0;
-                                //scale = 1f;
-                                //position = new Vector2(x, y);
+                                pressed = false;
+                                transformation = false;
                             }
                         }
 
+                        delayCounter = 0;
                     }
-
-
                 }
             }
-
-            if (ks.IsKeyDown(Keys.A))
+            else if (transformation == true && form == "thin")
             {
                 formChange = true;
 
@@ -299,13 +316,18 @@ namespace SizeMattersGame.Sprites
                             {
                                 frameIndex = 20;
                             }
+
+                            if (frameIndex == 23)
+                            {
+                                pressed = false;
+                                transformation = false;
+                            }
                         }
 
                     }
                 }
             }
-
-            if (ks.IsKeyDown(Keys.D))
+            else if (transformation == true && form == "thick")
             {
                 formChange = true;
 
@@ -326,8 +348,15 @@ namespace SizeMattersGame.Sprites
                             delayCounter = 0;
                         }
 
+                        if (frameIndex == 19)
+                        {
+                            pressed = false;
+                            transformation = false;
+                        }
+
                     }
                 }
+
             }
 
             if (pressed == false && ks.IsKeyUp(Keys.Left)
