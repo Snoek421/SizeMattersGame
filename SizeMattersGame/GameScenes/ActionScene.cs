@@ -30,6 +30,8 @@ namespace SizeMattersGame.GameScenes
         private int currentLevel = 1;
         private SpriteFont regularFont, highlightFont;
         private Vector2 messagePosition;
+        private gameObject door;
+        private gameObject button;
 
 
         public ActionScene(Game game) : base(game)
@@ -85,8 +87,8 @@ namespace SizeMattersGame.GameScenes
 
 
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
-            Vector2 objPos = new Vector2(200, 200);
-            gameObject door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
+            Vector2 objPos = new Vector2(Shared.stage.X - 51, Shared.stage.Y - 108);
+            door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
             components.Add(door);
 
             //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
@@ -102,6 +104,7 @@ namespace SizeMattersGame.GameScenes
         private void addMainComponents()
         {
             this.components.Add(player);
+            this.components.Add(door);
             this._collideables.Add(player);
             foreach (var block in _borders)
             {
