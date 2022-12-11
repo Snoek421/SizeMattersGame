@@ -11,7 +11,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace SizeMattersGame.Sprites
 {
     public class CollideableObject : DrawableGameComponent, ICollideableObject
-    {
+    { //mainly for blocks and the player, to allow the player to have collision with them
 
         public Game1 _game;
         public Texture2D tex;
@@ -28,7 +28,7 @@ namespace SizeMattersGame.Sprites
 
         public CollideableObject(Game game, Texture2D texture) : base(game)
         {
-            tex = texture;
+            tex = texture; //texture is needed for getting the bounding rectangle
         }
 
 
@@ -40,18 +40,18 @@ namespace SizeMattersGame.Sprites
 
         public bool CollidingBottom(CollideableObject sprite)
         {
-            Rectangle rectangle = this.GetBounds();
-            Rectangle spriteBox = sprite.GetBounds();
-            if (rectangle.Bottom + this.Velocity.Y > spriteBox.Top &&
-                rectangle.Top < spriteBox.Top &&
+            Rectangle rectangle = this.GetBounds(); //player
+            Rectangle spriteBox = sprite.GetBounds(); //block
+            if (rectangle.Bottom + this.Velocity.Y > spriteBox.Top && //if player's bottom will intersect with the Block's top with the current velocity
+                rectangle.Top < spriteBox.Top && 
                 rectangle.Right > spriteBox.Left &&
-                rectangle.Left < spriteBox.Right)
+                rectangle.Left < spriteBox.Right) //and the player is above the block
             {
-                return true;
+                return true; //return true, meaning the player will collide with the block while travelling downwards
             }
             else
             {
-                return false;
+                return false; //else return false, meaning 
             }
         }
 

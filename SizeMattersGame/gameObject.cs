@@ -30,7 +30,7 @@ namespace SizeMattersGame
         private int objectSprite;
         private int ObjectIndex = 0;
         private const int ROWS = 2;
-        private const int COLS = 4;       
+        private const int COLS = 4;
 
         bool isActive;
 

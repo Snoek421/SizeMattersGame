@@ -39,12 +39,13 @@ namespace SizeMattersGame.GameScenes
             g = (Game1)game;
             spriteBatch = g._spriteBatch;
 
+            //lists for loading level layouts and managing collision
             _collideables = new List<CollideableObject>();
             _borders = new List<CollideableObject>();
             _level1 = new List<CollideableObject>();
             _level2 = new List<CollideableObject>();
 
-            //ready fonts
+            //ready fonts for displaying congratulations
             SpriteFont regular = g.Content.Load<SpriteFont>("fonts/regularFont");
             SpriteFont hilight = g.Content.Load<SpriteFont>("fonts/highlightFont");
             regularFont = regular;
@@ -70,7 +71,7 @@ namespace SizeMattersGame.GameScenes
                 this.components.Add(block);
                 _collideables.Add(block);
             }
-
+            //load level 1
             foreach (var levelBlock in levelManager.Level1)
             {
                 Block block = new Block(game, spriteBatch, blockTex, levelBlock);
@@ -78,14 +79,14 @@ namespace SizeMattersGame.GameScenes
                 this.components.Add(block);
                 _collideables.Add(block);
             }
-
+            //load level 2 into a list for future loading into components
             foreach (var levelBlock in levelManager.Level2)
             {
                 Block block = new Block(game, spriteBatch, blockTex, levelBlock);
                 _level2.Add(block);
             }
 
-
+            //
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
             Vector2 objPos = new Vector2(Shared.stage.X - 51, Shared.stage.Y - 108);
             door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
