@@ -90,9 +90,7 @@ namespace SizeMattersGame
 
         public override void Draw(GameTime gameTime)
         {
-            objectBatch.Begin();
             objectBatch.Draw(objectTexture, position, sprites[objectSprite], Color.White, 0, origin, 3f, SpriteEffects.None, 1);
-            objectBatch.End();
 
             base.Draw(gameTime);
         }

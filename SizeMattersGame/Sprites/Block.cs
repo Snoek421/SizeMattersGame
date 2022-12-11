@@ -31,7 +31,6 @@ namespace SizeMattersGame.Sprites
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(tex, Position, Color.White);
             //if (ShowRectangle)
             //{
@@ -41,7 +40,6 @@ namespace SizeMattersGame.Sprites
             //        spriteBatch.Draw(_rectangleTexture, Position, Color.Red);
             //    }
             //}
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

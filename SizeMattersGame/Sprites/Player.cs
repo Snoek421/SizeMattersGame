@@ -369,7 +369,7 @@ namespace SizeMattersGame.Sprites
         {
             if (frameIndex >= 0)
             {
-                playerBatch.Begin();
+                
                 playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, 0, origin, SCALE, SpriteEffects.None, 1);
                 //if (ShowRectangle)
                 //{
@@ -379,7 +379,7 @@ namespace SizeMattersGame.Sprites
                 //        //playerBatch.Draw(_rectangleTexture, Position, Color.Red);
                 //    }
                 //}
-                playerBatch.End();
+                
             }
 
             base.Draw(gameTime);

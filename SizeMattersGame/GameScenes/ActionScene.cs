@@ -20,6 +20,7 @@ namespace SizeMattersGame.GameScenes
         private Game1 g;
         private SpriteBatch spriteBatch;
 
+
         private Player player;
         private List<CollideableObject> _collideables;
         private List<CollideableObject> _borders;
@@ -27,8 +28,13 @@ namespace SizeMattersGame.GameScenes
         private List<CollideableObject> _level2;
         private LevelManager levelManager;
         public int currentLevel = 1;
+
+        //stuff for score
+        private double _timer = 60;
+        private int secondTimer;
+        private int previousSecond;
         private SpriteFont regularFont, highlightFont;
-        private Vector2 messagePosition;
+        private Vector2 timerPosition = new Vector2(70, 70);
 
 
         //added elements
@@ -55,7 +61,6 @@ namespace SizeMattersGame.GameScenes
             SpriteFont hilight = g.Content.Load<SpriteFont>("fonts/highlightFont");
             regularFont = regular;
             highlightFont = hilight;
-            messagePosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
 
             //player character
             Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
@@ -117,6 +122,7 @@ namespace SizeMattersGame.GameScenes
         /// </summary>
         private void addMainComponents()
         {
+            _timer = 60;
             stageCleared = false;
             this.button.isActive = false;
             this.door.isActive = false;
@@ -158,7 +164,8 @@ namespace SizeMattersGame.GameScenes
             }
             base.Update(gameTime);
 
-
+            _timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            secondTimer = (int)Math.Round(_timer);
 
             if (stageCleared == true)
             {
@@ -191,16 +198,23 @@ namespace SizeMattersGame.GameScenes
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
             foreach (var collideable in _collideables)
             {
                 collideable.Draw(gameTime);
             }
-
-            if (currentLevel == 3)
-            {
-               
-            }
             base.Draw(gameTime);
+
+            if (secondTimer != previousSecond)
+            {
+                spriteBatch.DrawString(highlightFont, $"Time: {secondTimer}", timerPosition, Color.Black);
+            }
+            else
+            {
+                spriteBatch.DrawString(highlightFont, $"Time: {previousSecond}", timerPosition, Color.Black);
+            }
+            previousSecond = secondTimer;
+            spriteBatch.End();
         }
     }
 }
