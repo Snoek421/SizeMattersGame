@@ -21,7 +21,7 @@ namespace SizeMattersGame
 
         private gameObject battery;
 
-        private int firstTime = 0;
+        private bool firstTime = true;
 
         ActionScene scene;
         public InteractableObjectCollision(Game game, Player player, gameObject door, gameObject button, gameObject battery, ActionScene scene) : base(game)
@@ -31,6 +31,11 @@ namespace SizeMattersGame
             this.button = button;
             this.battery = battery;
             this.scene = scene;
+        }
+
+        public void resetFirstTime()
+        {
+            firstTime = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -46,16 +51,16 @@ namespace SizeMattersGame
             if (playerRect.Intersects(door.objectRect) && door.isActive == true)
             {
                 scene.stageCompleted = true;
-                firstTime = 0;
+                firstTime = true;
             }
 
-            if (playerRect.Intersects(battery.objectRect) && firstTime == 0)
+            if (playerRect.Intersects(battery.objectRect) && firstTime == true)
             {
                 battery.isActive = true;
                 battery.Visible = false;
                 player.Score += 1500;
                 scene.batteriesCollected++;
-                firstTime++;
+                firstTime = false;
             }
 
 

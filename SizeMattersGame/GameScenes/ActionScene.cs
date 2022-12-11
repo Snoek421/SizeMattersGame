@@ -170,6 +170,8 @@ namespace SizeMattersGame.GameScenes
         {
             clearLevel();
             addMainComponents();
+            collisionManager.resetFirstTime();
+            scoreScreen = false;
             player.Position = playerStartPos;
             foreach (var levelBlock in _level1)
             {
