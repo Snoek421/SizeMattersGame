@@ -30,9 +30,11 @@ namespace SizeMattersGame
         private int objectSprite;
         private int ObjectIndex = 0;
         private const int ROWS = 2;
-        private const int COLS = 4;       
+        private const int COLS = 4;
 
-        bool isActive;
+        private int baseSprite;
+        private int count;
+        public bool isActive;
 
         public gameObject(Game game, SpriteBatch playerBatch, Texture2D tex, Vector2 position, int sprite) : base(game)
         {
@@ -46,7 +48,8 @@ namespace SizeMattersGame
             origin = new Vector2(2, 1);
             objectRect = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
 
-            this.objectSprite = sprite;
+            this.baseSprite = sprite;
+            objectSprite = sprite;
 
             CreateFrames();
 
@@ -70,6 +73,18 @@ namespace SizeMattersGame
 
         public override void Update(GameTime gameTime)
         {
+            if (isActive == true && count == 0)
+            {
+                count++;
+                objectSprite++;
+            }
+
+            if (isActive == false)
+            {
+                objectSprite = baseSprite;
+                count = 0;
+            }
+
             base.Update(gameTime);
         }
 

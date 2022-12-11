@@ -30,8 +30,14 @@ namespace SizeMattersGame.GameScenes
         private int currentLevel = 1;
         private SpriteFont regularFont, highlightFont;
         private Vector2 messagePosition;
+
+
+        //added elements
         private gameObject door;
         private gameObject button;
+
+        InteractableObjectCollision test;
+        public bool stageCleared = false;
 
 
         public ActionScene(Game game) : base(game)
@@ -91,6 +97,14 @@ namespace SizeMattersGame.GameScenes
             door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
             components.Add(door);
 
+            objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
+            objPos = new Vector2(Shared.stage.X - 200, Shared.stage.Y - 108);
+            button = new gameObject(game, spriteBatch, objectTex, objPos, 5);
+            components.Add(button);
+
+            test = new InteractableObjectCollision(game, player, door, button, this);
+            components.Add(test);
+
             //CollisionManager = new CollisionManager(game, player, list of buttons and batteries and door);
             //components.Add(CollisionManager);
         }
@@ -103,8 +117,13 @@ namespace SizeMattersGame.GameScenes
 
         private void addMainComponents()
         {
+            stageCleared = false;
+            this.button.isActive = false;
+            this.door.isActive = false;
             this.components.Add(player);
+            this.components.Add(button);
             this.components.Add(door);
+            this.components.Add(test);
             this._collideables.Add(player);
             foreach (var block in _borders)
             {
@@ -128,7 +147,9 @@ namespace SizeMattersGame.GameScenes
             }
             base.Update(gameTime);
 
-            if (player.GetBounds().Right > Shared.stage.X)
+
+
+            if (stageCleared == true)
             {
                 player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
                 if (currentLevel == 1 && levelChanged == false)
