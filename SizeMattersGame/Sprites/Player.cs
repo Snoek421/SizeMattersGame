@@ -48,13 +48,15 @@ namespace SizeMattersGame.Sprites
         private const int COLS = 5;
 
         private bool formChange = false;
+        private int counterIndex = 0;
 
         public enum buttonState
         {
-            leftPressed,
             rightPressed,
-            leftReleased,
-            rightReleased
+            leftPressed,
+            rightReleased,
+            leftReleased
+            
         }
 
         public Player(Game game, SpriteBatch playerBatch, Texture2D tex, Vector2 position, SoundEffect jump) : base(game)
@@ -99,7 +101,7 @@ namespace SizeMattersGame.Sprites
         public void restart()
         {
             frameIndex = 0;
-            delayCounter = 0;
+            delayCounter = 0;            
             show();
         }
 
@@ -140,9 +142,10 @@ namespace SizeMattersGame.Sprites
                 }
             }
 
-
-            if (ks.IsKeyDown(Keys.Left) )
+            if (ks.IsKeyDown(Keys.Left))
             {
+                counterIndex = 0;
+
                 if (formChange == false)
                 {
                     if (pressed == false)
@@ -164,22 +167,33 @@ namespace SizeMattersGame.Sprites
                         }
                     }
 
-                }               
+                }
                 Velocity.X = -SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
                 oldState = buttonState.leftPressed;
 
-            }
+            }            
             else if (ks.IsKeyUp(Keys.Left) && oldState == buttonState.leftPressed)
             {
                 if (formChange == false)
                 {
                     restart();
-                }                
+                }
                 pressed = false;
                 oldState = buttonState.leftReleased;
                 Velocity.X = 0;
 
             }
+            else if (ks.IsKeyUp(Keys.Left) && ks.IsKeyDown(Keys.Right) && oldState == buttonState.leftPressed)
+            {
+                if (formChange == false)
+                {
+                    restart();
+                }
+                pressed = false;
+                oldState = buttonState.rightPressed;
+                Velocity.X = 0;
+            }
+
 
             if (ks.IsKeyDown(Keys.Right))
             {
@@ -216,7 +230,7 @@ namespace SizeMattersGame.Sprites
                 pressed = false;
                 oldState = buttonState.rightReleased;
                 Velocity.X = 0;
-            }
+            }            
 
             if (ks.IsKeyDown(Keys.W))
             {
