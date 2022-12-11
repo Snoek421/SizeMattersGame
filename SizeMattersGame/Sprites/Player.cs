@@ -48,7 +48,6 @@ namespace SizeMattersGame.Sprites
         private const int COLS = 5;
 
         private bool formChange = false;
-        private int counterIndex = 0;
 
         public enum buttonState
         {
@@ -141,10 +140,8 @@ namespace SizeMattersGame.Sprites
                 }
             }
 
-            if (ks.IsKeyDown(Keys.Left))
+            if (ks.IsKeyDown(Keys.Left) && ks.IsKeyUp(Keys.Right))
             {
-                counterIndex = 0; //not sure what this does
-
                 if (formChange == false) //if form is changed, don't animate
                 {
                     if (pressed == false)//if left key i
@@ -194,7 +191,7 @@ namespace SizeMattersGame.Sprites
             }
 
 
-            if (ks.IsKeyDown(Keys.Right))
+            if (ks.IsKeyDown(Keys.Right) && ks.IsKeyUp(Keys.Left))
             {
                 if (formChange == false)
                 {
