@@ -29,7 +29,7 @@ namespace SizeMattersGame.GameScenes
             this.regularFont = regularFont;
             this.highlightFont = highlightFont;
             menuItems = menus.ToList();
-            position = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
+            position = new Vector2(Shared.stage.X / 2 -100, Shared.stage.Y / 2 -100);
         }
 
         public override void Update(GameTime gameTime)

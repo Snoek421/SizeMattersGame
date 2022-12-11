@@ -25,7 +25,9 @@ namespace SizeMattersGame.GameScenes
         private List<CollideableObject> _collideables;
         private List<CollideableObject> _borders;
         private List<CollideableObject> _level1;
+        private List<gameObject> _level1Objects;
         private List<CollideableObject> _level2;
+        private List<gameObject> _level2Objects;
         private LevelManager levelManager;
         public int currentLevel = 1;
 
@@ -59,7 +61,9 @@ namespace SizeMattersGame.GameScenes
             _collideables = new List<CollideableObject>();
             _borders = new List<CollideableObject>();
             _level1 = new List<CollideableObject>();
+            _level1Objects = new List<gameObject>();
             _level2 = new List<CollideableObject>();
+            _level2Objects = new List<gameObject>();
 
             //ready fonts for displaying congratulations and scores
             SpriteFont regular = g.Content.Load<SpriteFont>("fonts/regularFont");
@@ -101,8 +105,16 @@ namespace SizeMattersGame.GameScenes
                 _level2.Add(block);
             }
 
-            //door, button, battery, and collision
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
+            //load objects for level 1
+
+            //gameObject door = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[0], 1);
+            //_level1Objects.Add(door);
+            //gameObject button = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[1], 5);
+            //_level1Objects.Add(button);
+
+            //door, button, battery, and collision
+
             Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
             door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
             components.Add(door);
@@ -240,7 +252,7 @@ namespace SizeMattersGame.GameScenes
 
             if (scoreScreen)
             {
-                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: 0 x 1500\n\nPlease press enter to continue";
+                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: 0 x 1500\n\nPress enter to go to the next level";
                 spriteBatch.DrawString(regularFont, scoreScreenMessage, centerScreen, Color.Maroon);
 
             }

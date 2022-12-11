@@ -21,8 +21,11 @@ namespace SizeMattersGame
         public List<Vector2> borders { get; private set; }
 
         public List<Vector2> Level1 { get; private set; }
+        public List<Vector2> Level1Objects { get; private set; }
+
 
         public List<Vector2> Level2 { get; private set; }
+        public List<Vector2> Level2Objects { get; private set; }
 
         public void CreateLevels()
         {
@@ -50,6 +53,7 @@ namespace SizeMattersGame
             if (Level1 == null)
             {
                 Level1 = new List<Vector2>();
+                Level1Objects = new List<Vector2>();
             }
             else
             {
@@ -59,7 +63,8 @@ namespace SizeMattersGame
             Level1.Add(new Vector2(0 + Texture.Width * 4, Shared.stage.Y - Texture.Height * 3));
             Level1.Add(new Vector2(0 + Texture.Width * 7, Shared.stage.Y - Texture.Height * 5));
             Level1.Add(new Vector2(0 + Texture.Width * 8, Shared.stage.Y - Texture.Height * 5));
-
+            Level1Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y - 108));
+            Level1Objects.Add(new Vector2(0 + Texture.Width * 8, Shared.stage.Y - Texture.Height* 6));
             //level 2 contents blocks
             if (Level2 == null)
             {
