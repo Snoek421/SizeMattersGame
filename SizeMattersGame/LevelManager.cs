@@ -63,7 +63,9 @@ namespace SizeMattersGame
             Level1.Add(new Vector2(0 + Texture.Width * 4, Shared.stage.Y - Texture.Height * 3));
             Level1.Add(new Vector2(0 + Texture.Width * 7, Shared.stage.Y - Texture.Height * 5));
             Level1.Add(new Vector2(0 + Texture.Width * 8, Shared.stage.Y - Texture.Height * 5));
+            //door
             Level1Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y - 108));
+            //button
             Level1Objects.Add(new Vector2(0 + Texture.Width * 8 + 15, Shared.stage.Y - Texture.Height* 6 + 10));
 
             //level 2 contents blocks
@@ -99,7 +101,10 @@ namespace SizeMattersGame
                     }
                 }
             }
+            //door
             Level2Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y - 108));
+
+            //button
             Level2Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y + 15 - Texture.Height * 6));
         }
 
