@@ -147,7 +147,7 @@ namespace SizeMattersGame.Sprites
 
                 if (formChange == false) //if form is changed, don't animate
                 {
-                    if (pressed == false)//if left key i
+                    if (pressed == false)//if left key is pressed then prepare to start animation
                     {
                         frameIndex = 8;
                         delayCounter = 0;
