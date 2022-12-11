@@ -111,17 +111,14 @@ namespace SizeMattersGame.GameScenes
 
             //door, button, battery, and collision
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
-            //Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
             door = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[0], 1);
             components.Add(door);
 
-            //objPos = new Vector2(Shared.stage.X - 240, Shared.stage.Y - 108);
             button = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[1], 5);
             components.Add(button);
 
-            Vector2 objPos = new Vector2(Shared.stage.X - 240, 200);
-            battery = new gameObject(game, spriteBatch, objectTex, objPos, 0);
-            components.Add(battery);
+            battery = new gameObject(game, spriteBatch, objectTex, new Vector2(-100, -100), 0);
+            //components.Add(battery);
 
             collisionManager = new InteractableObjectCollision(game, player, door, button, battery, this);
             components.Add(collisionManager);
@@ -157,9 +154,6 @@ namespace SizeMattersGame.GameScenes
             this.battery.isActive = false;
             this.battery.Visible = true;
             this.components.Add(player);
-            //this.components.Add(button);
-            //this.components.Add(door);
-            this.components.Add(battery);
             this.components.Add(collisionManager);
             this._collideables.Add(player);
             addBorders();
@@ -168,6 +162,7 @@ namespace SizeMattersGame.GameScenes
 
         public void LoadLevel1()
         {
+            stageCompleted = false;
             clearLevel();
             addMainComponents();
             collisionManager.resetFirstTime();
@@ -228,10 +223,13 @@ namespace SizeMattersGame.GameScenes
                         }
                         door.position = levelManager.Level2Objects[0];
                         button.position = levelManager.Level2Objects[1];
+                        battery.position = levelManager.Level2Objects[2];
                         this.components.Add(door);
-                        this.components.Add(button);                        
+                        this.components.Add(button);
+                        this.components.Add(battery);
                         collisionManager.door = door;
                         collisionManager.button = button;
+                        collisionManager.battery = battery;
                         currentLevel++;
                         levelChanged = true;
                     }
@@ -239,6 +237,7 @@ namespace SizeMattersGame.GameScenes
                     {
                         clearLevel();
                         addMainComponents();
+                        currentLevel = 3;
                         levelChanged = true;
                     }
                 }

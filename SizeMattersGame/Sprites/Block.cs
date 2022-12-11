@@ -32,15 +32,6 @@ namespace SizeMattersGame.Sprites
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Draw(tex, Position, Color.White);
-            //if (ShowRectangle)
-            //{
-            //    this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
-            //    if (_rectangleTexture != null)
-            //    {
-            //        spriteBatch.Draw(_rectangleTexture, Position, Color.Red);
-            //    }
-            //}
-
             base.Draw(gameTime);
         }
 

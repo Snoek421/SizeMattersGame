@@ -429,14 +429,6 @@ namespace SizeMattersGame.Sprites
             {
                 
                 playerBatch.Draw(tex, Position, frames[frameIndex], Color.White, 0, origin, SCALE, SpriteEffects.None, 1);
-                //if (ShowRectangle)
-                //{
-                //    this.SetRectangleTexture(g1.GraphicsDevice, this.GetBounds());
-                //    if (_rectangleTexture != null)
-                //    {
-                //        //playerBatch.Draw(_rectangleTexture, Position, Color.Red);
-                //    }
-                //}
                 
             }
 

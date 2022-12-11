@@ -19,7 +19,7 @@ namespace SizeMattersGame
 
         public gameObject button;
 
-        private gameObject battery;
+        public gameObject battery;
 
         private bool firstTime = true;
 

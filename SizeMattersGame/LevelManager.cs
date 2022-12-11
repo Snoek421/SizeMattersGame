@@ -106,6 +106,9 @@ namespace SizeMattersGame
 
             //button
             Level2Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y + 15 - Texture.Height * 6));
+
+            //battery
+            Level2Objects.Add(new Vector2(Shared.stage.X - 240, 0 + Texture.Height * 3));
         }
 
     }
