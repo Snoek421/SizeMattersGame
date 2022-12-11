@@ -20,7 +20,6 @@ namespace SizeMattersGame.GameScenes
         private Game1 g;
         private SpriteBatch spriteBatch;
 
-
         private Player player;
         private List<CollideableObject> _collideables;
         private List<CollideableObject> _borders;
@@ -30,11 +29,6 @@ namespace SizeMattersGame.GameScenes
         private List<gameObject> _level2Objects;
         private LevelManager levelManager;
         public int currentLevel = 1;
-
-        //stuff for score
-        private double _timer = 60;
-        private int secondTimer;
-        private int previousSecond;
         private SpriteFont regularFont, highlightFont;
         private Vector2 timerPosition = new Vector2(70, 70);
         private Vector2 scorePosition = new Vector2(Shared.stage.X - 300, 70);
@@ -70,6 +64,7 @@ namespace SizeMattersGame.GameScenes
             SpriteFont hilight = g.Content.Load<SpriteFont>("fonts/highlightFont");
             regularFont = regular;
             highlightFont = hilight;
+            messagePosition = new Vector2(Shared.stage.X / 2, Shared.stage.Y / 2);
 
             //player character
             Texture2D playerTex = game.Content.Load<Texture2D>("images/SizeSpriteSheet");
@@ -243,12 +238,10 @@ namespace SizeMattersGame.GameScenes
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
             foreach (var collideable in _collideables)
             {
                 collideable.Draw(gameTime);
             }
-            base.Draw(gameTime);
 
             if (scoreScreen)
             {
