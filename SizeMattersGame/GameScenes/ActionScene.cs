@@ -21,13 +21,12 @@ namespace SizeMattersGame.GameScenes
         private SpriteBatch spriteBatch;
 
         private Player player;
-        private CollisionManager CollisionManager;
         private List<CollideableObject> _collideables;
         private List<CollideableObject> _borders;
         private List<CollideableObject> _level1;
         private List<CollideableObject> _level2;
         private LevelManager levelManager;
-        private int currentLevel = 1;
+        public int currentLevel = 1;
         private SpriteFont regularFont, highlightFont;
         private Vector2 messagePosition;
 
@@ -94,12 +93,12 @@ namespace SizeMattersGame.GameScenes
 
             //
             Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
-            Vector2 objPos = new Vector2(Shared.stage.X - 51, Shared.stage.Y - 108);
+            Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
             door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
             components.Add(door);
 
             objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
-            objPos = new Vector2(Shared.stage.X - 200, Shared.stage.Y - 108);
+            objPos = new Vector2(Shared.stage.X - 240, Shared.stage.Y - 108);
             button = new gameObject(game, spriteBatch, objectTex, objPos, 5);
             components.Add(button);
 
@@ -130,6 +129,17 @@ namespace SizeMattersGame.GameScenes
             {
                 this.components.Add(block);
                 this._collideables.Add(block);
+            }
+        }
+
+        public void LoadLevel1()
+        {
+            clearLevel();
+            addMainComponents();
+            foreach (var levelBlock in _level1)
+            {
+                this.components.Add(levelBlock);
+                this._collideables.Add(levelBlock);
             }
         }
 

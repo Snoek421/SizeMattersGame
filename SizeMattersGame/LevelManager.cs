@@ -37,7 +37,7 @@ namespace SizeMattersGame
                 {
                     if (j != 1 && j != 8)
                     {
-                        if (i != 0)// && i != 13)
+                        if (i != 0 && i != 13)
                         {
                             continue;
                         }

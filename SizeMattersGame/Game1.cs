@@ -116,6 +116,8 @@ namespace SizeMattersGame
 					startScene.show();
 					try
 					{
+						actionScene.currentLevel = 1;
+						actionScene.LoadLevel1();
 						MediaPlayer.Stop();
 					}
 					catch (System.Exception)
