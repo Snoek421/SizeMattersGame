@@ -124,6 +124,32 @@ namespace SizeMattersGame.GameScenes
                 collideable.Update(gameTime, _collideables);
             }
             base.Update(gameTime);
+
+            if (player.GetBounds().Right > Shared.stage.X)
+            {
+                player.Position = new Vector2(0 + 65, Shared.stage.Y / 2);
+                if (currentLevel == 1 && levelChanged == false)
+                {
+                    clearLevel();
+                    addMainComponents();
+                    foreach (var levelBlock in _level2)
+                    {
+                        this.components.Add(levelBlock);
+                        this._collideables.Add(levelBlock);
+                    }
+                    currentLevel = 2;
+                    levelChanged = true;
+                }
+                if (currentLevel == 2 && levelChanged == false)
+                {
+                    clearLevel();
+                    addMainComponents();
+                    levelChanged = true;
+                }
+
+
+            }
+
         }
 
         public override void Draw(GameTime gameTime)
