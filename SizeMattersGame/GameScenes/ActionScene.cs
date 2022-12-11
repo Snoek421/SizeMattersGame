@@ -20,14 +20,14 @@ namespace SizeMattersGame.GameScenes
         private Game1 g;
         private SpriteBatch spriteBatch;
 
-
+        //player entity
         private Player player;
+
+        //lists for loading levels and calculating collision
         private List<CollideableObject> _collideables;
         private List<CollideableObject> _borders;
         private List<CollideableObject> _level1;
-        private List<gameObject> _level1Objects;
         private List<CollideableObject> _level2;
-        private List<gameObject> _level2Objects;
         private LevelManager levelManager;
         public int currentLevel = 1;
 
@@ -61,9 +61,7 @@ namespace SizeMattersGame.GameScenes
             _collideables = new List<CollideableObject>();
             _borders = new List<CollideableObject>();
             _level1 = new List<CollideableObject>();
-            _level1Objects = new List<gameObject>();
             _level2 = new List<CollideableObject>();
-            _level2Objects = new List<gameObject>();
 
             //ready fonts for displaying congratulations and scores
             SpriteFont regular = g.Content.Load<SpriteFont>("fonts/regularFont");
@@ -105,22 +103,17 @@ namespace SizeMattersGame.GameScenes
                 _level2.Add(block);
             }
 
-            Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
-            //load objects for level 1
 
-            //gameObject door = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[0], 1);
-            //_level1Objects.Add(door);
-            //gameObject button = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[1], 5);
-            //_level1Objects.Add(button);
+
 
             //door, button, battery, and collision
-
-            Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
-            door = new gameObject(game, spriteBatch, objectTex, objPos, 1);
+            Texture2D objectTex = game.Content.Load<Texture2D>("images/ObjectSheet");
+            //Vector2 objPos = new Vector2(Shared.stage.X - 108, Shared.stage.Y - 108);
+            door = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[0], 1);
             components.Add(door);
 
-            objPos = new Vector2(Shared.stage.X - 240, Shared.stage.Y - 108);
-            button = new gameObject(game, spriteBatch, objectTex, objPos, 5);
+            //objPos = new Vector2(Shared.stage.X - 240, Shared.stage.Y - 108);
+            button = new gameObject(game, spriteBatch, objectTex, levelManager.Level1Objects[1], 5);
             components.Add(button);
 
             test = new InteractableObjectCollision(game, player, door, button, this);
@@ -154,8 +147,8 @@ namespace SizeMattersGame.GameScenes
             this.button.isActive = false;
             this.door.isActive = false;
             this.components.Add(player);
-            this.components.Add(button);
-            this.components.Add(door);
+            //this.components.Add(button);
+            //this.components.Add(door);
             this.components.Add(test);
             this._collideables.Add(player);
             addBorders();
@@ -171,6 +164,10 @@ namespace SizeMattersGame.GameScenes
                 this.components.Add(levelBlock);
                 this._collideables.Add(levelBlock);
             }
+            door.position = levelManager.Level1Objects[0];
+            button.position = levelManager.Level1Objects[1];
+            this.components.Add(door);
+            this.components.Add(button);
         }
 
         protected override void LoadContent()
@@ -215,6 +212,12 @@ namespace SizeMattersGame.GameScenes
                             this.components.Add(levelBlock);
                             this._collideables.Add(levelBlock);
                         }
+                        door.position = levelManager.Level2Objects[0];
+                        button.position = levelManager.Level2Objects[1];
+                        this.components.Add(door);
+                        this.components.Add(button);
+                        test.door = door;
+                        test.button = button;
                         currentLevel++;
                         levelChanged = true;
                     }

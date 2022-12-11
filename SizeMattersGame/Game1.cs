@@ -98,12 +98,12 @@ namespace SizeMattersGame
 					hideAllScenes();
 					helpScene.show();
 				}
-				if (selectedIndex == 3 && ks.IsKeyDown(Keys.Enter))
+				if (selectedIndex == 2 && ks.IsKeyDown(Keys.Enter))
 				{
 					hideAllScenes();
 					creditScene.show();
 				}
-				if (selectedIndex == 4 && ks.IsKeyDown(Keys.Enter))
+				if (selectedIndex == 3 && ks.IsKeyDown(Keys.Enter))
 				{
 					Exit();
 				}

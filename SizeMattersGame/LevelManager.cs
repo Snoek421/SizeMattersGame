@@ -64,11 +64,13 @@ namespace SizeMattersGame
             Level1.Add(new Vector2(0 + Texture.Width * 7, Shared.stage.Y - Texture.Height * 5));
             Level1.Add(new Vector2(0 + Texture.Width * 8, Shared.stage.Y - Texture.Height * 5));
             Level1Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y - 108));
-            Level1Objects.Add(new Vector2(0 + Texture.Width * 8, Shared.stage.Y - Texture.Height* 6));
+            Level1Objects.Add(new Vector2(0 + Texture.Width * 8 + 15, Shared.stage.Y - Texture.Height* 6 + 10));
+
             //level 2 contents blocks
             if (Level2 == null)
             {
                 Level2 = new List<Vector2>();
+                Level2Objects = new List<Vector2>();
             }
             else
             {
@@ -96,6 +98,8 @@ namespace SizeMattersGame
                     }
                 }
             }
+            Level2Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y - 108));
+            Level2Objects.Add(new Vector2(Shared.stage.X - Texture.Width * 2, Shared.stage.Y + 15 - Texture.Height * 6));
         }
 
     }

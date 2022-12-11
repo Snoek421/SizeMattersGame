@@ -15,9 +15,9 @@ namespace SizeMattersGame
     {
         private Player player;
 
-        private gameObject door;
+        public gameObject door;
 
-        private gameObject button;
+        public gameObject button;
 
         ActionScene scene;
         public InteractableObjectCollision(Game game, Player player, gameObject door, gameObject button, ActionScene scene) : base(game)

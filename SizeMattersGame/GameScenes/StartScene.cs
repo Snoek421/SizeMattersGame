@@ -16,7 +16,7 @@ namespace SizeMattersGame.GameScenes
         public MenuComponent menu { get; set; }
         private Game1 g;
         private SpriteBatch spriteBatch;
-        private string[] menuItems = { "Start game", "Help", "High score", "About", "Quit" };
+        private string[] menuItems = { "Start game", "Help", "About", "Quit" };
 
         public StartScene(Game game) : base(game)
         {

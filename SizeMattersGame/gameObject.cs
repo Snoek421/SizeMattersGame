@@ -42,8 +42,7 @@ namespace SizeMattersGame
             this.objectTexture = tex;
             this.position = position;
 
-            x = (int)position.X;
-            y = (int)position.Y;
+
 
             origin = new Vector2(2, 1);
             objectRect = new Rectangle(x, y, tex.Width / ROWS, tex.Height / COLS);
