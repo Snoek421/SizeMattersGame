@@ -101,7 +101,7 @@ namespace SizeMattersGame.Sprites
         public void restart()
         {
             frameIndex = 0;
-            delayCounter = 0;            
+            delayCounter = 0;
             show();
         }
 
@@ -115,7 +115,6 @@ namespace SizeMattersGame.Sprites
 
         bool pressed = false;
         buttonState oldState;
-        KeyboardState oldKsState; //was trying to use this to prevent bouncing after landing
 
         public override void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
@@ -144,11 +143,11 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.Left))
             {
-                counterIndex = 0;
+                counterIndex = 0; //not sure what this does
 
-                if (formChange == false)
+                if (formChange == false) //if form is changed, don't animate
                 {
-                    if (pressed == false)
+                    if (pressed == false)//if left key i
                     {
                         frameIndex = 8;
                         delayCounter = 0;
@@ -390,7 +389,6 @@ namespace SizeMattersGame.Sprites
 
 
             Position += Velocity;
-            oldKsState = ks;
             base.Update(gameTime);
         }
 
