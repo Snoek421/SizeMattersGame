@@ -22,6 +22,7 @@ namespace SizeMattersGame.GameScenes
 
         //player entity
         private Player player;
+        private Vector2 playerStartPos = new Vector2(0 + 65, Shared.stage.Y / 2);
 
         //lists for loading levels and calculating collision
         private List<CollideableObject> _collideables;
@@ -45,9 +46,9 @@ namespace SizeMattersGame.GameScenes
         private gameObject door;
         private gameObject button;
         private gameObject battery;
-        public int batteries = 0;
+        public int batteriesCollected = 0;
 
-        InteractableObjectCollision test;
+        InteractableObjectCollision collisionManager;
 
         //stage transition control
         public bool stageCompleted = false;
@@ -122,8 +123,8 @@ namespace SizeMattersGame.GameScenes
             battery = new gameObject(game, spriteBatch, objectTex, objPos, 0);
             components.Add(battery);
 
-            test = new InteractableObjectCollision(game, player, door, button, battery, this);
-            components.Add(test);
+            collisionManager = new InteractableObjectCollision(game, player, door, button, battery, this);
+            components.Add(collisionManager);
 
         }
 
@@ -149,6 +150,7 @@ namespace SizeMattersGame.GameScenes
         {
             _timer = 60;
             player.Score = 0;
+            batteriesCollected = 0;
             stageCompleted = false;
             this.button.isActive = false;
             this.door.isActive = false;
@@ -158,7 +160,7 @@ namespace SizeMattersGame.GameScenes
             //this.components.Add(button);
             //this.components.Add(door);
             this.components.Add(battery);
-            this.components.Add(test);
+            this.components.Add(collisionManager);
             this._collideables.Add(player);
             addBorders();
         }
@@ -168,6 +170,7 @@ namespace SizeMattersGame.GameScenes
         {
             clearLevel();
             addMainComponents();
+            player.Position = playerStartPos;
             foreach (var levelBlock in _level1)
             {
                 this.components.Add(levelBlock);
@@ -197,7 +200,7 @@ namespace SizeMattersGame.GameScenes
 
             if (scoreScreen)
             {
-                player.Score = secondTimer * 200;
+                player.Score = secondTimer * 200 + batteriesCollected * 1500;
             }
             else
             {
@@ -225,8 +228,8 @@ namespace SizeMattersGame.GameScenes
                         button.position = levelManager.Level2Objects[1];
                         this.components.Add(door);
                         this.components.Add(button);
-                        test.door = door;
-                        test.button = button;
+                        collisionManager.door = door;
+                        collisionManager.button = button;
                         currentLevel++;
                         levelChanged = true;
                     }
@@ -264,7 +267,7 @@ namespace SizeMattersGame.GameScenes
 
             if (scoreScreen)
             {
-                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: {batteries} x 1500\n\nPress enter to go to the next level";
+                string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: {batteriesCollected} x 1500\n\nPress enter to go to the next level";
                 spriteBatch.DrawString(regularFont, scoreScreenMessage, centerScreen, Color.Maroon);
 
             }

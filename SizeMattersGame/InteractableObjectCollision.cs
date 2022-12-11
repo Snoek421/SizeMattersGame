@@ -54,7 +54,7 @@ namespace SizeMattersGame
                 battery.isActive = true;
                 battery.Visible = false;
                 player.Score += 1500;
-                scene.batteries++;
+                scene.batteriesCollected++;
                 firstTime++;
             }
 

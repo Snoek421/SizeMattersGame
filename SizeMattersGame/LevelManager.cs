@@ -82,7 +82,8 @@ namespace SizeMattersGame
                 {
                     if (j == 2 && i > 5)
                     {
-                        Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                        //Level2.Add(new Vector2(0 + Texture.Width * i, Shared.stage.Y - Texture.Height * j));
+                        continue;
                     }
                     else if (j == 3 && i > 6)
                     {
