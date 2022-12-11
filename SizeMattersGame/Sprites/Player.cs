@@ -143,31 +143,38 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.Left) )
             {
-                if (pressed == false)
+                if (formChange == false)
                 {
-                    frameIndex = 8;
-                    delayCounter = 0;
-                    pressed = true;
-                }
-                else if (pressed == true)
-                {
-                    delayCounter++;
-                    if (delayCounter > 7)
+                    if (pressed == false)
                     {
-                        if (frameIndex < 10)
+                        frameIndex = 8;
+                        delayCounter = 0;
+                        pressed = true;
+                    }
+                    else if (pressed == true)
+                    {
+                        delayCounter++;
+                        if (delayCounter > 7)
                         {
-                            frameIndex++;
-                            delayCounter = 0;
+                            if (frameIndex < 10)
+                            {
+                                frameIndex++;
+                                delayCounter = 0;
+                            }
                         }
                     }
-                }
+
+                }               
                 Velocity.X = -SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
                 oldState = buttonState.leftPressed;
 
             }
             else if (ks.IsKeyUp(Keys.Left) && oldState == buttonState.leftPressed)
             {
-                restart();
+                if (formChange == false)
+                {
+                    restart();
+                }                
                 pressed = false;
                 oldState = buttonState.leftReleased;
                 Velocity.X = 0;
@@ -176,30 +183,36 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.Right))
             {
-                if (pressed == false)
+                if (formChange == false)
                 {
-                    frameIndex = 5;
-                    delayCounter = 0;
-                    pressed = true;
-                }
-                else if (pressed == true)
-                {
-                    delayCounter++;
-                    if (delayCounter > 7)
+                    if (pressed == false)
                     {
-                        if (frameIndex < 7)
+                        frameIndex = 5;
+                        delayCounter = 0;
+                        pressed = true;
+                    }
+                    else if (pressed == true)
+                    {
+                        delayCounter++;
+                        if (delayCounter > 7)
                         {
-                            frameIndex++;
-                            delayCounter = 0;
+                            if (frameIndex < 7)
+                            {
+                                frameIndex++;
+                                delayCounter = 0;
+                            }
                         }
                     }
-                }
+                }                
                 Velocity.X = SPEED; //Allows the player's horizontal movement to be independent of the vertical movement
                 oldState = buttonState.rightPressed;
             }
             else if (ks.IsKeyUp(Keys.Right) && oldState == buttonState.rightPressed)
             {
-                restart();
+                if (formChange == false)
+                {
+                    restart();
+                }
                 pressed = false;
                 oldState = buttonState.rightReleased;
                 Velocity.X = 0;
@@ -208,6 +221,7 @@ namespace SizeMattersGame.Sprites
             if (ks.IsKeyDown(Keys.W))
             {
                 restart();
+                formChange = false;
                 pressed = false;
                 //tex = game.Content.Load<Texture2D>("images/SizeLargeText");
                 //playerBox = new Rectangle(x, y, tex.Width, tex.Height);               
@@ -216,6 +230,8 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.S))
             {
+                formChange = true;
+
                 if (pressed == false)
                 {
                     frameIndex = 11;
@@ -252,6 +268,8 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.A))
             {
+                formChange = true;
+
                 if (pressed == false)
                 {
                     frameIndex = 11;
@@ -279,6 +297,8 @@ namespace SizeMattersGame.Sprites
 
             if (ks.IsKeyDown(Keys.D))
             {
+                formChange = true;
+
                 if (pressed == false)
                 {
                     frameIndex = 11;
@@ -302,7 +322,7 @@ namespace SizeMattersGame.Sprites
 
             if (pressed == false && ks.IsKeyUp(Keys.Left)
                 && ks.IsKeyUp(Keys.Up) && ks.IsKeyUp(Keys.Down)
-                && ks.IsKeyUp(Keys.Right))
+                && ks.IsKeyUp(Keys.Right) && formChange == false)
             {
                 delayCounter++;
                 if (delayCounter > 7)
