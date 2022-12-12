@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct2D1.Effects;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace SizeMattersGame
+namespace SizeMattersGame.Sprites
 {
     public class gameObject : DrawableGameComponent
     {
@@ -22,7 +22,9 @@ namespace SizeMattersGame
         public Vector2 position;
 
 
-        public Rectangle objectRect { get
+        public Rectangle objectRect
+        {
+            get
             {
                 return new Rectangle((int)position.X, (int)position.Y, objectTexture.Width / ROWS, objectTexture.Height / COLS);
             }
@@ -41,14 +43,14 @@ namespace SizeMattersGame
 
         public gameObject(Game game, SpriteBatch playerBatch, Texture2D tex, Vector2 position, int sprite) : base(game)
         {
-            this.objectBatch = playerBatch;
-            this.objectTexture = tex;
+            objectBatch = playerBatch;
+            objectTexture = tex;
             this.position = position;
 
 
             origin = new Vector2(2, 1);
 
-            this.baseSprite = sprite;
+            baseSprite = sprite;
             objectSprite = sprite;
 
             CreateFrames();

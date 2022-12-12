@@ -7,9 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SizeMattersGame.GameScenes;
-using SizeMattersGame.Sprites;
 
-namespace SizeMattersGame
+namespace SizeMattersGame.Sprites
 {
     public class InteractableObjectCollision : GameComponent
     {
