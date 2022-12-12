@@ -79,6 +79,9 @@ namespace SizeMattersGame.Sprites
             jumpSound = jump;
         }
 
+        /// <summary>
+        /// Creates the frames which are used for the animation
+        /// </summary>
         private void CreateFrames()
         {
             frames = new List<Rectangle>();
@@ -94,17 +97,9 @@ namespace SizeMattersGame.Sprites
             }
         }
 
-        private void hide()
-        {
-            Enabled = false;
-            Visible = false;
-        }
-        private void show()
-        {
-            Enabled = true;
-            Visible = true;
-        }
-
+        /// <summary>
+        /// Restarts the values for the delaycounter and the animation frame
+        /// </summary>
         public void restart()
         {
             frameIndex = 0;
@@ -117,8 +112,6 @@ namespace SizeMattersGame.Sprites
             int simpleSize = (int)Math.Round(size) - 7;
             return simpleSize;
         }
-
-        
 
         public override void Update(GameTime gameTime, List<CollideableObject> collideables)
         {
