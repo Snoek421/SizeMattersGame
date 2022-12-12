@@ -35,7 +35,7 @@ namespace SizeMattersGame.GameScenes
         public int currentLevel = 1;
 
         //stuff for score
-        private const double INIT_TIMER = 10;
+        private const double INIT_TIMER = 15;
         private double _timer = INIT_TIMER;
         private int secondTimer;
         private int previousSecond;
