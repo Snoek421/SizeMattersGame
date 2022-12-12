@@ -41,8 +41,8 @@ namespace SizeMattersGame.GameScenes
         private int previousSecond;
         private SpriteFont regularFont, highlightFont;
         private Vector2 timerPosition = new Vector2(70, 70);
-        private Vector2 scorePosition = new Vector2(Shared.stage.X - 300, 70);
-        private Vector2 centerScreen = new Vector2(Shared.stage.X / 2 - 200, Shared.stage.Y / 2 - 100);
+        private Vector2 scorePosition = new Vector2(Shared.stage.X - 250, 70);
+        private Vector2 congratsPosition = new Vector2(Shared.stage.X / 2 - 200, Shared.stage.Y / 2 - 100);
 
         //stuff to store the scores for different levels
         private int firstLevelScore = 0;
@@ -333,12 +333,12 @@ namespace SizeMattersGame.GameScenes
 
             if (resetMessageTimer > 0)
             {
-                spriteBatch.DrawString(highlightFont, "Time Up!", new Vector2(Shared.stage.X / 2 - 100, Shared.stage.Y /2), Color.Red);
+                spriteBatch.DrawString(highlightFont, "Time Up!", new Vector2(Shared.stage.X / 2 - 90, 0 + 70), Color.Red);
             }
             if (scoreScreen && currentLevel != 3) //if score screen should be shown and the current level isn't 3 (the congrats screen) then show score for the level
             {
                 string scoreScreenMessage = $"Your score was: {player.Score} \nTimer: {secondTimer} x 200 = {secondTimer * 200}\nBatteries: {batteriesCollected} x 1500\n\nPress enter to go to the next level";
-                spriteBatch.DrawString(regularFont, scoreScreenMessage, centerScreen, Color.Maroon);
+                spriteBatch.DrawString(regularFont, scoreScreenMessage, congratsPosition, Color.Maroon);
 
             }
             else if (scoreScreen && currentLevel == 3) //if score screen should be shown but the current level is the congrats screen then show congrats message with both level's scores

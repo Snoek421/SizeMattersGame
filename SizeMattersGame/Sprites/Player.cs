@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace SizeMattersGame.Sprites
 {
     public class Player : CollideableObject
@@ -48,6 +49,7 @@ namespace SizeMattersGame.Sprites
 
         //variable for the "form" Change
         private bool formChange = false;
+        private bool transformed = false; //needed to prevent repeateding animation
 
         //variables to smooth controls and animation
         public enum buttonState
@@ -228,31 +230,29 @@ namespace SizeMattersGame.Sprites
                 pressed = false;
                 oldState = buttonState.rightReleased;
                 Velocity.X = 0;
-            }            
+            }
 
             if (ks.IsKeyDown(Keys.W))
             {
                 restart();
                 formChange = false;
                 pressed = false;
-                //tex = game.Content.Load<Texture2D>("images/SizeLargeText");
-                //playerBox = new Rectangle(x, y, tex.Width, tex.Height);               
-                //rotation = (float)Math.PI;
+                transformed = false;
             }
 
-            if (ks.IsKeyDown(Keys.S))
+            if (ks.IsKeyDown(Keys.S) && transformed == false)
             {
                 form = "small";
                 transformation = true;
             }
 
-            if (ks.IsKeyDown(Keys.A))
+            if (ks.IsKeyDown(Keys.A)&& transformed == false)
             {
                 form = "thin";
                 transformation = true;
             }
 
-            if (ks.IsKeyDown(Keys.D))
+            if (ks.IsKeyDown(Keys.D) && transformed == false )
             {
                 form = "thick";
                 transformation = true;
@@ -286,6 +286,7 @@ namespace SizeMattersGame.Sprites
                             {
                                 pressed = false;
                                 transformation = false;
+                                transformed = true;
                             }
                         }
 
@@ -321,6 +322,7 @@ namespace SizeMattersGame.Sprites
                             {
                                 pressed = false;
                                 transformation = false;
+                                transformed = true;
                             }
                         }
 
@@ -352,6 +354,7 @@ namespace SizeMattersGame.Sprites
                         {
                             pressed = false;
                             transformation = false;
+                            transformed = true;
                         }
 
                     }
@@ -371,7 +374,6 @@ namespace SizeMattersGame.Sprites
                     if (frameIndex > 4)
                     {
                         frameIndex = 0;
-                        //hide();
                         restart();
                     }
                 }
