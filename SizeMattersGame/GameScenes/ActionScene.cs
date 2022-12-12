@@ -54,6 +54,7 @@ namespace SizeMattersGame.GameScenes
         private gameObject button;
         private gameObject battery;
         public int batteriesCollected = 0;
+        private Vector2 lvl1BatteryPosition = new Vector2(-1000, -1000);
 
         InteractableObjectCollision collisionManager;
 
@@ -126,7 +127,8 @@ namespace SizeMattersGame.GameScenes
 
             //battery
             //start the first battery out of bounds, to let there be a battery in level 2 but not in level 1
-            battery = new gameObject(game, spriteBatch, objectTex, new Vector2(-100, -100), 0);
+            
+            battery = new gameObject(game, spriteBatch, objectTex, lvl1BatteryPosition, 0);
 
             //collision manager for objects
             collisionManager = new InteractableObjectCollision(game, player, door, button, battery, this);
@@ -194,6 +196,7 @@ namespace SizeMattersGame.GameScenes
             player.Position = playerStartPos;
             door.position = levelManager.Level1Objects[0];
             button.position = levelManager.Level1Objects[1];
+            battery.position = lvl1BatteryPosition; //pull battery off screen for level 1
             collisionManager.door = door;
             collisionManager.button = button;
             this.components.Add(door);
